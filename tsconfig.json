@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "commonjs",
+    "rootDir": "./",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["reflect-metadata"],
+    "strictPropertyInitialization": false,
+
+    "paths": {
+      "@controllers/*": ["./src/controllers/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@core/*": ["./src/core/*"],
+      "@services/*": ["./src/services/*"],
+      "@entities/*": ["./src/core/entities/*"],
+      "@repositories/*": ["./src/core/repositories/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@middlewares/*": ["./src/middlewares/*"]
+    }
+  }
+}

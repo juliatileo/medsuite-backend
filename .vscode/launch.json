@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "configurations": [
+    {
+      "type": "node",
+      "name": "launch",
+      "request": "launch",
+      "program": "${file}",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "dev"],
+      "skipFiles": ["<node_internals>/**"],
+      "env": {
+        "teste": "kdds"
+      }
+    }
+  ]
+}
