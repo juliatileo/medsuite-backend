@@ -1,4 +1,4 @@
-import UserEntity from "@entities/user";
+import { UserEntity } from "@entities/user";
 
 export interface IUserRepository {
   list(): Promise<UserEntity[]>;

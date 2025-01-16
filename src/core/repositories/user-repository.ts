@@ -2,7 +2,7 @@ import { injectable } from "inversify";
 import { Repository } from "typeorm";
 
 import { IUserRepository } from "@repositories/interfaces/user-repository";
-import UserEntity from "@core/entities/user";
+import { UserEntity } from "@core/entities/user";
 import dataSource from "@core/database";
 
 @injectable()

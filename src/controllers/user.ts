@@ -10,7 +10,7 @@ import {
 } from "inversify-express-utils";
 
 import { TYPES } from "@core/types";
-import UserEntity from "@core/entities/user";
+import { UserEntity } from "@core/entities/user";
 
 import { auth } from "@middlewares/auth";
 
@@ -22,7 +22,7 @@ export class UserController
   implements interfaces.Controller
 {
   constructor(
-    @inject(TYPES.UserService) private readonly userService: IUserService,
+    @inject(TYPES.UserService) private readonly userService: IUserService
   ) {
     super();
   }
@@ -34,14 +34,14 @@ export class UserController
 
   @httpPost("/")
   async save(
-    @requestBody() body: UserEntity,
+    @requestBody() body: UserEntity
   ): Promise<{ user: UserEntity; token: string }> {
     return this.userService.save(body);
   }
 
   @httpPut("/login")
   async login(
-    @requestBody() { email, password }: { email: string; password: string },
+    @requestBody() { email, password }: { email: string; password: string }
   ): Promise<{ user: UserEntity; token: string }> {
     return this.userService.login({ email, password });
   }

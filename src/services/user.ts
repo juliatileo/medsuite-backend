@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 import { TYPES } from "@core/types";
 import { IUserRepository } from "@core/repositories/interfaces/user-repository";
-import UserEntity from "@core/entities/user";
+import { UserEntity } from "@core/entities/user";
 
 import getEnv from "@shared/env";
 

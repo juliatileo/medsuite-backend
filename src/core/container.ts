@@ -7,8 +7,18 @@ import { UserRepository } from "@repositories/user-repository";
 
 import { TYPES } from "./types";
 import { UserService } from "@services/user";
+import { IAppointmentService } from "@services/interfaces/appointment";
+import { AppointmentRepository } from "./repositories/appointment-repository";
+import { AppointmentService } from "@services/appointment";
+import { IAppointmentRepository } from "./repositories/interfaces/appointment-repository";
 
 export const container = new Container();
 
 container.bind<IUserService>(TYPES.UserService).to(UserService);
 container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository);
+container
+  .bind<IAppointmentService>(TYPES.AppointmentService)
+  .to(AppointmentService);
+container
+  .bind<IAppointmentRepository>(TYPES.AppointmentRepository)
+  .to(AppointmentRepository);

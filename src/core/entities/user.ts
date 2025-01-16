@@ -1,6 +1,7 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, JoinColumn, ObjectType, OneToMany } from "typeorm";
 
 import Base from "@entities/dto/base";
+import { AppointmentEntity } from "./appointment";
 
 export enum UserType {
   PATIENT = 1,
@@ -8,7 +9,7 @@ export enum UserType {
 }
 
 @Entity("users")
-export default class UserEntity extends Base {
+export class UserEntity extends Base {
   @Column({ nullable: false })
   public name: string;
 
@@ -28,4 +29,18 @@ export default class UserEntity extends Base {
     default: UserType.PATIENT,
   })
   public type: UserType;
+
+  @OneToMany(
+    (): ObjectType<AppointmentEntity> => AppointmentEntity,
+    (appointment: AppointmentEntity): UserEntity => appointment.Patient
+  )
+  @JoinColumn({ name: "userId", referencedColumnName: "id" })
+  public patientAppointments: AppointmentEntity[];
+
+  @OneToMany(
+    (): ObjectType<AppointmentEntity> => AppointmentEntity,
+    (appointment: AppointmentEntity): UserEntity => appointment.Patient
+  )
+  @JoinColumn({ name: "userId", referencedColumnName: "id" })
+  public doctorAppointments: AppointmentEntity[];
 }
