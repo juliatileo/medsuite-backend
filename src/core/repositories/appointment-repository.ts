@@ -1,9 +1,10 @@
-import { injectable } from "inversify";
-import { Repository } from "typeorm";
+import { injectable } from 'inversify';
+import { Repository } from 'typeorm';
 
-import dataSource from "@core/database";
-import { IAppointmentRepository } from "./interfaces/appointment-repository";
-import { AppointmentEntity } from "@core/entities/appointment";
+import dataSource from '@core/database';
+import { AppointmentEntity } from '@core/entities/appointment';
+
+import { IAppointmentRepository } from './interfaces/appointment-repository';
 
 @injectable()
 export class AppointmentRepository implements IAppointmentRepository {

@@ -1,9 +1,10 @@
-import { injectable } from "inversify";
-import { Repository } from "typeorm";
+import { injectable } from 'inversify';
+import { Repository } from 'typeorm';
 
-import { IUserRepository } from "@repositories/interfaces/user-repository";
-import { UserEntity } from "@core/entities/user";
-import dataSource from "@core/database";
+import dataSource from '@core/database';
+import { UserEntity } from '@core/entities/user';
+
+import { IUserRepository } from '@repositories/interfaces/user-repository';
 
 @injectable()
 export class UserRepository implements IUserRepository {

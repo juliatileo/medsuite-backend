@@ -1,6 +1,6 @@
 export enum TYPES {
-  UserService = "UserService",
-  UserRepository = "UserRepository",
-  AppointmentService = "AppointmentService",
-  AppointmentRepository = "AppointmentRepository",
+  UserService = 'UserService',
+  UserRepository = 'UserRepository',
+  AppointmentService = 'AppointmentService',
+  AppointmentRepository = 'AppointmentRepository',
 }

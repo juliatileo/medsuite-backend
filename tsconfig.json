@@ -14,14 +14,14 @@
     "strictPropertyInitialization": false,
 
     "paths": {
-      "@controllers/*": ["./src/controllers/*"],
-      "@utils/*": ["./src/utils/*"],
       "@core/*": ["./src/core/*"],
+      "@controllers/*": ["./src/controllers/*"],
       "@services/*": ["./src/services/*"],
       "@entities/*": ["./src/core/entities/*"],
       "@repositories/*": ["./src/core/repositories/*"],
       "@shared/*": ["./src/shared/*"],
-      "@middlewares/*": ["./src/middlewares/*"]
+      "@middlewares/*": ["./src/middlewares/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   }
 }

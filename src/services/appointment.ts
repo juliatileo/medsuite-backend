@@ -1,8 +1,10 @@
 import { inject, injectable } from "inversify";
-import { IAppointmentService } from "./interfaces/appointment";
-import { TYPES } from "@core/types";
-import { IAppointmentRepository } from "@core/repositories/interfaces/appointment-repository";
+
 import { AppointmentEntity } from "@core/entities/appointment";
+import { IAppointmentRepository } from "@core/repositories/interfaces/appointment-repository";
+import { TYPES } from "@core/types";
+
+import { IAppointmentService } from "./interfaces/appointment";
 
 @injectable()
 export class AppointmentService implements IAppointmentService {

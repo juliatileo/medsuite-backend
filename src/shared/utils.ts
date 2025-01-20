@@ -1,6 +1,6 @@
 export function generateCode(length: number) {
-  let result = "";
-  const characters = "0123456789";
+  let result = '';
+  const characters = '0123456789';
   const charactersLength = characters.length;
   let counter = 0;
 

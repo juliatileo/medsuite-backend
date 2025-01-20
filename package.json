@@ -11,6 +11,7 @@
     "migration:create": "typeorm migration:create -d ./src/core/migrations -n"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.2.5",
     "@eslint/js": "^9.9.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
@@ -21,8 +22,10 @@
     "@types/multer": "^1.4.12",
     "@types/node": "^22.2.0",
     "@types/sharp": "^0.32.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.18.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.7.0",
+    "eslint-plugin-import": "^2.31.0",
     "mysql": "npm:mysql2@^2.1.0",
     "nodemon": "^3.1.4",
     "prettier": "^3.3.3",
@@ -34,10 +37,15 @@
     "typescript-eslint": "^8.1.0"
   },
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
+    "@typescript-eslint/parser": "^8.20.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "eslint-plugin-import-helpers": "^2.0.1",
+    "eslint-plugin-prettier": "^5.2.2",
+    "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
     "express": "^4.19.2",
     "inversify": "^6.0.2",
     "inversify-express-utils": "6.3.2",

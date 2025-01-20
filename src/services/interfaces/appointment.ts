@@ -1,4 +1,4 @@
-import { AppointmentEntity } from "@core/entities/appointment";
+import { AppointmentEntity } from '@core/entities/appointment';
 
 export interface IAppointmentService {
   listByPatientId(patientId: string): Promise<AppointmentEntity[]>;

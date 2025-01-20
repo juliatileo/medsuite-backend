@@ -1,21 +1,21 @@
-import path from "path";
-import { DataSource } from "typeorm";
+import path from 'path';
+import { DataSource } from 'typeorm';
 
-import getEnv from "@shared/env";
+import getEnv from '@shared/env';
 
 const {
   database: { host, username, database, port, password },
 } = getEnv();
 
 const dataSource: DataSource = new DataSource({
-  type: "mysql",
+  type: 'mysql',
   host,
-  port: parseInt(port || "5432", 10),
+  port: parseInt(port || '5432', 10),
   username,
   password,
   database,
-  migrations: [`${path.join(__dirname, "migrations/*{.ts,.js}")}`],
-  entities: [`${path.join(__dirname, "entities/*{.ts,.js}")}`],
+  migrations: [`${path.join(__dirname, 'migrations/*{.ts,.js}')}`],
+  entities: [`${path.join(__dirname, 'entities/*{.ts,.js}')}`],
   migrationsRun: true,
   synchronize: false,
 });
@@ -23,7 +23,7 @@ const dataSource: DataSource = new DataSource({
 export const initializeDataSource = async (): Promise<DataSource> => {
   if (!dataSource.isInitialized) {
     await dataSource.initialize();
-    console.log("database connected");
+    console.log('database connected');
   }
   return dataSource;
 };

@@ -1,4 +1,4 @@
-import { IEnv } from "@shared/types/env.types";
+import { IEnv } from '@shared/types/env.types';
 
 export default function getEnv(): IEnv {
   const {

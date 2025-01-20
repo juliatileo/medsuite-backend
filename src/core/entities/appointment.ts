@@ -1,8 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, ObjectType } from "typeorm";
-import Base from "./dto/base";
-import { UserEntity } from "./user";
+import { Column, Entity, JoinColumn, ManyToOne, ObjectType } from 'typeorm';
 
-@Entity("appointments")
+import Base from './dto/base';
+import { UserEntity } from './user';
+
+@Entity('appointments')
 export class AppointmentEntity extends Base {
   @Column()
   date: Date;
@@ -18,15 +19,15 @@ export class AppointmentEntity extends Base {
 
   @ManyToOne(
     (): ObjectType<UserEntity> => UserEntity,
-    (patient: UserEntity): AppointmentEntity[] => patient.patientAppointments
+    (patient: UserEntity): AppointmentEntity[] => patient.patientAppointments,
   )
-  @JoinColumn({ name: "userId", referencedColumnName: "id" })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   public Patient: UserEntity;
 
   @ManyToOne(
     (): ObjectType<UserEntity> => UserEntity,
-    (doctor: UserEntity): AppointmentEntity[] => doctor.doctorAppointments
+    (doctor: UserEntity): AppointmentEntity[] => doctor.doctorAppointments,
   )
-  @JoinColumn({ name: "userId", referencedColumnName: "id" })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   public Doctor: UserEntity;
 }

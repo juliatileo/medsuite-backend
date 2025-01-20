@@ -1,79 +1,74 @@
-import {
-  MigrationInterface,
-  QueryRunner,
-  Table,
-  TableForeignKey,
-} from "typeorm";
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
 
 export class AddAppointmentTable1737062287701 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "appointments",
+        name: 'appointments',
         columns: [
           {
-            name: "id",
-            type: "varchar",
+            name: 'id',
+            type: 'varchar',
             isPrimary: true,
-            generationStrategy: "uuid",
+            generationStrategy: 'uuid',
           },
           {
-            name: "date",
-            type: "timestamp",
+            name: 'date',
+            type: 'timestamp',
             isNullable: false,
           },
           {
-            name: "description",
-            type: "varchar",
+            name: 'description',
+            type: 'varchar',
             isNullable: false,
           },
           {
-            name: "patientId",
-            type: "varchar",
+            name: 'patientId',
+            type: 'varchar',
             isNullable: false,
           },
           {
-            name: "doctorId",
-            type: "varchar",
+            name: 'doctorId',
+            type: 'varchar',
             isNullable: false,
           },
           {
-            name: "createdAt",
-            type: "timestamp",
-            default: "now()",
+            name: 'createdAt',
+            type: 'timestamp',
+            default: 'now()',
           },
           {
-            name: "updatedAt",
-            type: "timestamp",
-            default: "now()",
+            name: 'updatedAt',
+            type: 'timestamp',
+            default: 'now()',
           },
           {
-            name: "deletedAt",
-            type: "timestamp",
+            name: 'deletedAt',
+            type: 'timestamp',
             isNullable: true,
           },
         ],
         foreignKeys: [
           new TableForeignKey({
-            columnNames: ["patientId"],
-            referencedColumnNames: ["id"],
-            referencedTableName: "users",
-            name: "patient_appointment_FK",
+            columnNames: ['patientId'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'users',
+            name: 'patient_appointment_FK',
           }),
           new TableForeignKey({
-            columnNames: ["doctorId"],
-            referencedColumnNames: ["id"],
-            referencedTableName: "users",
-            name: "doctor_appointment_FK",
+            columnNames: ['doctorId'],
+            referencedColumnNames: ['id'],
+            referencedTableName: 'users',
+            name: 'doctor_appointment_FK',
           }),
         ],
       }),
       true,
-      true
+      true,
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("appointments");
+    await queryRunner.dropTable('appointments');
   }
 }

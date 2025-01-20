@@ -1,14 +1,15 @@
-import { Column, Entity, JoinColumn, ObjectType, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ObjectType, OneToMany } from 'typeorm';
 
-import Base from "@entities/dto/base";
-import { AppointmentEntity } from "./appointment";
+import Base from '@entities/dto/base';
+
+import { AppointmentEntity } from './appointment';
 
 export enum UserType {
   PATIENT = 1,
   DOCTOR = 2,
 }
 
-@Entity("users")
+@Entity('users')
 export class UserEntity extends Base {
   @Column({ nullable: false })
   public name: string;
@@ -23,7 +24,7 @@ export class UserEntity extends Base {
   public password: string;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: UserType,
     nullable: false,
     default: UserType.PATIENT,
@@ -32,15 +33,15 @@ export class UserEntity extends Base {
 
   @OneToMany(
     (): ObjectType<AppointmentEntity> => AppointmentEntity,
-    (appointment: AppointmentEntity): UserEntity => appointment.Patient
+    (appointment: AppointmentEntity): UserEntity => appointment.Patient,
   )
-  @JoinColumn({ name: "userId", referencedColumnName: "id" })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   public patientAppointments: AppointmentEntity[];
 
   @OneToMany(
     (): ObjectType<AppointmentEntity> => AppointmentEntity,
-    (appointment: AppointmentEntity): UserEntity => appointment.Patient
+    (appointment: AppointmentEntity): UserEntity => appointment.Patient,
   )
-  @JoinColumn({ name: "userId", referencedColumnName: "id" })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   public doctorAppointments: AppointmentEntity[];
 }
