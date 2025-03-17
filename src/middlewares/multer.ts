@@ -23,10 +23,10 @@ export function upload(field: string): (req: Request, res: Response, next: NextF
             default:
               throw new Error('Something went wrong');
           }
-        } catch (err) {
-          const error = err as Error;
+        } catch (error) {
+          const errorAsClass = error as Error;
 
-          return res.status(400).json({ message: error.message });
+          return res.status(400).json({ message: errorAsClass.message });
         }
       }
 
@@ -41,10 +41,10 @@ export function upload(field: string): (req: Request, res: Response, next: NextF
           req.file.filename = filename;
 
           next();
-        } catch (err) {
-          const error = err as Error;
+        } catch (error) {
+          const errorAsClass = error as Error;
 
-          return res.status(400).json({ message: error.message });
+          return res.status(400).json({ message: errorAsClass.message });
         }
       } else {
         return next();

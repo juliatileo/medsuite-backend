@@ -28,9 +28,8 @@ export function auth(req: Request, res: Response, next: NextFunction): void {
     req.session = decoded;
 
     return next();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
-    console.log(err);
-
     throw new HttpError('Authentication error', 500);
   }
 }

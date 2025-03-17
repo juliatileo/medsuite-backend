@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { fixupPluginRules } from "@eslint/compat";
-import { FlatCompat } from "@eslint/eslintrc";
-import js from "@eslint/js";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
-import eslintConfigPrettier from "eslint-config-prettier";
-import _import from "eslint-plugin-import";
-import importHelpers from "eslint-plugin-import-helpers";
-import prettier from "eslint-plugin-prettier";
-import globals from "globals";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fixupPluginRules } from '@eslint/compat';
+import { FlatCompat } from '@eslint/eslintrc';
+import js from '@eslint/js';
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import _import from 'eslint-plugin-import';
+import importHelpers from 'eslint-plugin-import-helpers';
+import prettier from 'eslint-plugin-prettier';
+import globals from 'globals';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,16 +22,12 @@ const compat = new FlatCompat({
 });
 
 export default [
-  ...compat.extends(
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
-  ),
-  ...eslintConfigPrettier,
+  ...compat.extends('plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'),
   {
     plugins: {
-      "@typescript-eslint": typescriptEslint,
+      '@typescript-eslint': typescriptEslint,
       prettier,
-      "import-helpers": importHelpers,
+      'import-helpers': importHelpers,
       import: fixupPluginRules(_import),
     },
     languageOptions: {
@@ -40,93 +36,93 @@ export default [
       },
       parser: tsParser,
       ecmaVersion: 12,
-      sourceType: "module",
+      sourceType: 'module',
 
       parserOptions: {
-        project: "./tsconfig.json",
-        tsconfigRootDir: "./",
+        project: './tsconfig.json',
+        tsconfigRootDir: './',
       },
     },
     settings: {
-      "import/resolver": {
+      'import/resolver': {
         typescript: {
-          project: ["tsconfig.json"],
+          project: ['tsconfig.json'],
         },
       },
     },
     rules: {
-      "no-shadow": 0,
-      "@typescript-eslint/no-shadow": ["error"],
-      "no-new": 0,
-      "no-plusplus": "off",
-      "no-prototype-builtins": 0,
-      "no-restricted-syntax": 0,
-      "no-console": 2,
-      "import/prefer-default-export": 0,
-      "no-underscore-dangle": 0,
-      "class-methods-use-this": 0,
-      "no-return-await": 2,
-      "import/extensions": [
-        "error",
-        "ignorePackages",
+      'no-shadow': 0,
+      '@typescript-eslint/no-shadow': ['error'],
+      'no-new': 0,
+      'no-plusplus': 'off',
+      'no-prototype-builtins': 0,
+      'no-restricted-syntax': 0,
+      'no-console': 2,
+      'import/prefer-default-export': 0,
+      'no-underscore-dangle': 0,
+      'class-methods-use-this': 0,
+      'no-return-await': 2,
+      'import/extensions': [
+        'error',
+        'ignorePackages',
         {
-          ts: "never",
+          ts: 'never',
         },
       ],
-      "prettier/prettier": [
-        "error",
+      'prettier/prettier': [
+        'error',
         {
           semi: true,
-          trailingComma: "all",
+          trailingComma: 'all',
           singleQuote: true,
           printWidth: 120,
           tabWidth: 2,
           bracketSpacing: true,
           useTabs: false,
-          parser: "typescript",
-          endOfLine: "auto",
+          parser: 'typescript',
+          endOfLine: 'auto',
         },
       ],
-      "import-helpers/order-imports": [
-        "warn",
+      'import-helpers/order-imports': [
+        'warn',
         {
-          newlinesBetween: "always",
+          newlinesBetween: 'always',
           groups: [
-            "module",
-            "/^@src/",
-            "/^@core/",
-            "/^@controllers/",
-            "/^@services/",
-            "/^@entities/",
-            "/^@repositories/",
-            "/^@shared/",
-            "/^@middlewares/",
-            "/^@utils/",
+            'module',
+            '/^@src/',
+            '/^@core/',
+            '/^@controllers/',
+            '/^@services/',
+            '/^@entities/',
+            '/^@repositories/',
+            '/^@shared/',
+            '/^@middlewares/',
+            '/^@utils/',
           ],
           alphabetize: {
-            order: "asc",
+            order: 'asc',
             ignoreCase: true,
           },
         },
       ],
-      "object-literal-sort-keys": 0,
-      "sort-imports": [
-        "error",
+      'object-literal-sort-keys': 0,
+      'sort-imports': [
+        'error',
         {
           ignoreCase: true,
           ignoreDeclarationSort: true,
           ignoreMemberSort: false,
-          memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
+          memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
           allowSeparatedGroups: true,
         },
       ],
-      "max-classes-per-file": [2, 1],
-      "no-param-reassign": 0,
-      "no-duplicate-imports": 2,
-      "ordered-imports": 0,
-      "variable-name": 0,
-      "import-name": 0,
-      "max-len": [
+      'max-classes-per-file': [2, 1],
+      'no-param-reassign': 0,
+      'no-duplicate-imports': 2,
+      'ordered-imports': 0,
+      'variable-name': 0,
+      'import-name': 0,
+      'max-len': [
         2,
         120,
         2,
@@ -135,45 +131,46 @@ export default [
           ignoreTemplateLiterals: true,
         },
       ],
-      "lines-between-class-members": [0],
-      "no-empty": [2],
-      "@typescript-eslint/no-explicit-any": ["error"],
-      "@typescript-eslint/explicit-function-return-type": ["off"],
+      'lines-between-class-members': [0],
+      'no-empty': [2],
+      '@typescript-eslint/no-explicit-any': ['error'],
+      '@typescript-eslint/explicit-function-return-type': ['off'],
 
-      "@typescript-eslint/no-unused-vars": [
-        "error",
+      '@typescript-eslint/no-unused-vars': [
+        'error',
         {
-          argsIgnorePattern: "_",
+          argsIgnorePattern: '_',
         },
       ],
-      "@typescript-eslint/naming-convention": [
-        "error",
+      '@typescript-eslint/naming-convention': [
+        'error',
         {
-          selector: "interface",
-          format: ["PascalCase"],
+          selector: 'interface',
+          format: ['PascalCase'],
         },
       ],
-      "@typescript-eslint/explicit-module-boundary-types": [
-        "warn",
+      '@typescript-eslint/explicit-module-boundary-types': [
+        'warn',
         {
           allowArgumentsExplicitlyTypedAsAny: true,
         },
       ],
-      "@typescript-eslint/array-type": [2],
-      "@typescript-eslint/no-unsafe-member-access": 0,
-      "@typescript-eslint/no-empty-interface": 2,
-      "@typescript-eslint/typedef": [2],
-      "@typescript-eslint/no-useless-constructor": "off",
-      "no-useless-constructor": "off",
-      "@typescript-eslint/no-unsafe-assignment": 1,
-      "@typescript-eslint/no-unsafe-call": 1,
-      "prefer-const": [
-        "error",
+      '@typescript-eslint/array-type': [2],
+      '@typescript-eslint/no-unsafe-member-access': 0,
+      '@typescript-eslint/no-empty-interface': 2,
+      '@typescript-eslint/typedef': [2],
+      '@typescript-eslint/no-useless-constructor': 'off',
+      'no-useless-constructor': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 1,
+      '@typescript-eslint/no-unsafe-call': 1,
+      'prefer-const': [
+        'error',
         {
-          destructuring: "all",
+          destructuring: 'all',
           ignoreReadBeforeAssign: false,
         },
       ],
+      ...eslintConfigPrettier.rules,
     },
   },
 ];

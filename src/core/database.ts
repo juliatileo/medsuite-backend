@@ -23,6 +23,7 @@ const dataSource: DataSource = new DataSource({
 export const initializeDataSource = async (): Promise<DataSource> => {
   if (!dataSource.isInitialized) {
     await dataSource.initialize();
+    // eslint-disable-next-line no-console
     console.log('database connected');
   }
   return dataSource;
