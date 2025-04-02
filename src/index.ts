@@ -1,17 +1,16 @@
+import * as bodyParser from 'body-parser';
+import cors from 'cors';
 import { NextFunction, Request, Response, static as static_ } from 'express';
 import { STATUS_CODES } from 'http';
 import 'reflect-metadata';
 import 'dotenv/config';
-
-import * as bodyParser from 'body-parser';
-import cors from 'cors';
 import { InversifyExpressServer } from 'inversify-express-utils';
 
 import { container } from '@core/container';
 import { initializeDataSource } from '@core/database';
+import { HttpError } from '@core/types/error';
 
 import '@controllers/.';
-import { HttpError } from '@core/types/error';
 
 initializeDataSource().then(() => {
   const server = new InversifyExpressServer(container, null, {
@@ -40,6 +39,7 @@ initializeDataSource().then(() => {
           message: err?.message || 'Internal Server Error',
         });
       }
+
       next();
     });
   });

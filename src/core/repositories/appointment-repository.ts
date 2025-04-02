@@ -15,6 +15,10 @@ export class AppointmentRepository implements IAppointmentRepository {
     this.repository = dataSource.getRepository(AppointmentEntity);
   }
 
+  async getById(id: string): Promise<AppointmentEntity | null> {
+    return this.repository.findOne({ where: { id } });
+  }
+
   async listByPatientId(patientId: string): Promise<AppointmentEntity[]> {
     return this.repository.find({
       where: { patientId },

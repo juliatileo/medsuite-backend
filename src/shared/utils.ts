@@ -1,4 +1,4 @@
-export function generateCode(length: number) {
+export function generateCode(length: number): string {
   let result = '';
   const characters = '0123456789';
   const charactersLength = characters.length;

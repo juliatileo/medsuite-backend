@@ -1,16 +1,16 @@
-import { inject, injectable } from "inversify";
+import { inject, injectable } from 'inversify';
 
-import { AppointmentEntity } from "@core/entities/appointment";
-import { IAppointmentRepository } from "@core/repositories/interfaces/appointment-repository";
-import { TYPES } from "@core/types";
+import { AppointmentEntity } from '@core/entities/appointment';
+import { IAppointmentRepository } from '@core/repositories/interfaces/appointment-repository';
+import { TYPES } from '@core/types';
 
-import { IAppointmentService } from "./interfaces/appointment";
+import { IAppointmentService } from './interfaces/appointment';
 
 @injectable()
 export class AppointmentService implements IAppointmentService {
   constructor(
     @inject(TYPES.AppointmentRepository)
-    private readonly appointmentRepository: IAppointmentRepository
+    private readonly appointmentRepository: IAppointmentRepository,
   ) {}
 
   listByPatientId(patientId: string): Promise<AppointmentEntity[]> {
