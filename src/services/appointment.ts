@@ -13,9 +13,19 @@ export class AppointmentService implements IAppointmentService {
     private readonly appointmentRepository: IAppointmentRepository
   ) {}
 
-  listByPatientId(patientId: string): Promise<AppointmentEntity[]> {}
+  listByPatientId(patientId: string): Promise<AppointmentEntity[]> {
+    return this.appointmentRepository.listByPatientId(patientId);
+  }
 
-  listByDoctorId(doctorId: string): Promise<AppointmentEntity[]> {}
+  listByDoctorId(doctorId: string): Promise<AppointmentEntity[]> {
+    return this.appointmentRepository.listByDoctorId(doctorId);
+  }
 
-  save(appointment: AppointmentEntity): Promise<AppointmentEntity> {}
+  save(appointment: AppointmentEntity): Promise<AppointmentEntity> {
+    return this.appointmentRepository.save(appointment);
+  }
+
+  listByDate(date: string): Promise<AppointmentEntity[]> {
+    return this.appointmentRepository.listByDate(new Date(date));
+  }
 }

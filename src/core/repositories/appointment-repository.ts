@@ -1,10 +1,11 @@
-import { injectable } from 'inversify';
-import { Repository } from 'typeorm';
+import { injectable } from "inversify";
+import { Between, Repository } from "typeorm";
 
-import dataSource from '@core/database';
-import { AppointmentEntity } from '@core/entities/appointment';
+import dataSource from "@core/database";
+import { AppointmentEntity } from "@core/entities/appointment";
 
-import { IAppointmentRepository } from './interfaces/appointment-repository';
+import { IAppointmentRepository } from "./interfaces/appointment-repository";
+import { DateTime } from "luxon";
 
 @injectable()
 export class AppointmentRepository implements IAppointmentRepository {
@@ -15,14 +16,34 @@ export class AppointmentRepository implements IAppointmentRepository {
   }
 
   async listByPatientId(patientId: string): Promise<AppointmentEntity[]> {
-    return this.repository.find({ where: { patientId } });
+    return this.repository.find({
+      where: { patientId },
+      order: { date: "ASC" },
+    });
   }
 
   async listByDoctorId(doctorId: string): Promise<AppointmentEntity[]> {
-    return this.repository.find({ where: { doctorId } });
+    return this.repository.find({
+      where: { doctorId },
+      order: { date: "ASC" },
+    });
   }
 
   async save(user: AppointmentEntity): Promise<AppointmentEntity> {
     return this.repository.save(user);
+  }
+
+  async listByDate(date: Date): Promise<AppointmentEntity[]> {
+    DateTime.fromJSDate(date).startOf("day").toJSDate(),
+      DateTime.fromJSDate(date).endOf("day").toJSDate();
+
+    return this.repository.find({
+      where: {
+        date: Between(
+          DateTime.fromJSDate(date).startOf("day").toJSDate(),
+          DateTime.fromJSDate(date).endOf("day").toJSDate()
+        ),
+      },
+    });
   }
 }
