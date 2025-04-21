@@ -27,6 +27,11 @@ export class UserController extends BaseHttpController implements interfaces.Con
     return this.userService.list();
   }
 
+  @httpGet('/patients', auth)
+  async listPatients(): Promise<UserEntity[]> {
+    return this.userService.listPatients();
+  }
+
   @httpPost('/')
   async save(@requestBody() body: UserEntity): Promise<{ user: UserEntity; token: string }> {
     return this.userService.save(body);

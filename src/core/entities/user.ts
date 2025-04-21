@@ -1,8 +1,9 @@
-import { Column, Entity, JoinColumn, ObjectType, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ObjectType, OneToMany, OneToOne } from 'typeorm';
 
 import Base from '@entities/dto/base';
 
 import { AppointmentEntity } from './appointment';
+import { PatientInfoEntity } from './patient-info';
 
 export enum UserType {
   PATIENT = 1,
@@ -44,4 +45,10 @@ export class UserEntity extends Base {
   )
   @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   public doctorAppointments: AppointmentEntity[];
+
+  @OneToOne(
+    (): ObjectType<PatientInfoEntity> => PatientInfoEntity,
+    (patientInfo: PatientInfoEntity): UserEntity => patientInfo.User,
+  )
+  public patientInfo: PatientInfoEntity;
 }
