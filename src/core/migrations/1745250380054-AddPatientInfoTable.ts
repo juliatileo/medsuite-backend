@@ -13,18 +13,18 @@ export class AddPatientInfoTable1745250380054 implements MigrationInterface {
             generationStrategy: 'uuid',
           },
           {
-            name: 'age',
-            type: 'int',
+            name: 'birthDate',
+            type: 'timestamp',
             isNullable: false,
           },
           {
             name: 'height',
-            type: 'float',
+            type: 'decimal',
             isNullable: false,
           },
           {
             name: 'weight',
-            type: 'float',
+            type: 'decimal',
             isNullable: false,
           },
           {

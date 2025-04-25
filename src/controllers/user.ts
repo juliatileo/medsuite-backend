@@ -7,6 +7,7 @@ import {
   httpPut,
   interfaces,
   requestBody,
+  requestParam,
 } from 'inversify-express-utils';
 
 import { UserEntity } from '@core/entities/user';
@@ -30,6 +31,11 @@ export class UserController extends BaseHttpController implements interfaces.Con
   @httpGet('/patients', auth)
   async listPatients(): Promise<UserEntity[]> {
     return this.userService.listPatients();
+  }
+
+  @httpGet('/:id', auth)
+  async getById(@requestParam('id') id: string): Promise<UserEntity> {
+    return this.userService.getById(id);
   }
 
   @httpPost('/')

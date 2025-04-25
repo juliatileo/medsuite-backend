@@ -6,15 +6,15 @@ import { UserEntity } from './user';
 @Entity('patient-info')
 export class PatientInfoEntity extends Base {
   @Column()
-  age: number;
+  birthDate: Date;
 
   @Column()
   height: number;
 
-  @Column()
+  @Column('float', { precision: 6, scale: 2 })
   weight: number;
 
-  @Column()
+  @Column('float', { precision: 6, scale: 2 })
   bloodType: string;
 
   @Column()

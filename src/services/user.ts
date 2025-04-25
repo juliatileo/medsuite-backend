@@ -27,6 +27,16 @@ export class UserService implements IUserService {
     return this.userRepository.listPatients();
   }
 
+  async getById(id: string): Promise<UserEntity> {
+    const user = await this.userRepository.getById(id);
+
+    if (!user) {
+      throw new HttpError('User not found', 404);
+    }
+
+    return user;
+  }
+
   async save(body: UserEntity): Promise<{ user: UserEntity; token: string }> {
     if (!env.auth.secret) {
       throw new HttpError('Secret is empty', 500);

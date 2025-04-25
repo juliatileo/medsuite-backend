@@ -22,6 +22,10 @@ export class UserRepository implements IUserRepository {
     return this.repository.find({ where: { type: UserType.PATIENT }, relations: ['patientInfo'] });
   }
 
+  async getById(id: string): Promise<UserEntity | null> {
+    return this.repository.findOne({ where: { id }, relations: ['patientInfo'] });
+  }
+
   async save(user: UserEntity): Promise<UserEntity> {
     return this.repository.save(user);
   }
