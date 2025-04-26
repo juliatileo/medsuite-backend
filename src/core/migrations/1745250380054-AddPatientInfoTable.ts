@@ -20,11 +20,15 @@ export class AddPatientInfoTable1745250380054 implements MigrationInterface {
           {
             name: 'height',
             type: 'decimal',
+            precision: 10,
+            scale: 2,
             isNullable: false,
           },
           {
             name: 'weight',
             type: 'decimal',
+            precision: 10,
+            scale: 2,
             isNullable: false,
           },
           {

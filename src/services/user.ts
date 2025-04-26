@@ -3,6 +3,7 @@ import { inject, injectable } from 'inversify';
 import jwt from 'jsonwebtoken';
 
 import { UserEntity } from '@core/entities/user';
+import { IPatientInfoRepository } from '@core/repositories/interfaces/patient-info-repository';
 import { IUserRepository } from '@core/repositories/interfaces/user-repository';
 import { TYPES } from '@core/types';
 import { HttpError } from '@core/types/error';
@@ -17,6 +18,8 @@ export class UserService implements IUserService {
   constructor(
     @inject(TYPES.UserRepository)
     private readonly userRepository: IUserRepository,
+    @inject(TYPES.PatientInfoRepository)
+    private readonly patientInfoRepository: IPatientInfoRepository,
   ) {}
 
   async list(): Promise<UserEntity[]> {
@@ -54,6 +57,22 @@ export class UserService implements IUserService {
     });
 
     return { user, token };
+  }
+
+  async update(body: UserEntity): Promise<UserEntity> {
+    const user = await this.userRepository.getById(body.id);
+
+    if (!user) {
+      throw new HttpError('User not found', 404);
+    }
+
+    await this.userRepository.save(body);
+
+    if (body.patientInfo) {
+      await this.patientInfoRepository.save(body.patientInfo);
+    }
+
+    return { ...user, ...body };
   }
 
   async login({ email, password }: { email: string; password: string }): Promise<{ user: UserEntity; token: string }> {

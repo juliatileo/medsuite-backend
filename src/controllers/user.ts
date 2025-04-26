@@ -43,6 +43,11 @@ export class UserController extends BaseHttpController implements interfaces.Con
     return this.userService.save(body);
   }
 
+  @httpPut('/')
+  async update(@requestBody() body: UserEntity): Promise<UserEntity> {
+    return this.userService.update(body);
+  }
+
   @httpPut('/login')
   async login(
     @requestBody() { email, password }: { email: string; password: string },

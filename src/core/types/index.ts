@@ -3,4 +3,5 @@ export enum TYPES {
   UserRepository = 'UserRepository',
   AppointmentService = 'AppointmentService',
   AppointmentRepository = 'AppointmentRepository',
+  PatientInfoRepository = 'PatientInfoRepository',
 }

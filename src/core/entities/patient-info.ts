@@ -8,13 +8,19 @@ export class PatientInfoEntity extends Base {
   @Column()
   birthDate: Date;
 
-  @Column()
+  @Column('decimal', {
+    precision: 10,
+    scale: 2,
+  })
   height: number;
 
-  @Column('float', { precision: 6, scale: 2 })
+  @Column('decimal', {
+    precision: 10,
+    scale: 2,
+  })
   weight: number;
 
-  @Column('float', { precision: 6, scale: 2 })
+  @Column()
   bloodType: string;
 
   @Column()

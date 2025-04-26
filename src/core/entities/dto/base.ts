@@ -2,14 +2,14 @@ import { CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateC
 
 export default class Base {
   @PrimaryGeneratedColumn('uuid')
-  public id?: string;
+  public id: string;
 
   @CreateDateColumn({ type: 'timestamp' })
-  createdAt?: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
-  updatedAt?: Date;
+  updatedAt: Date;
 
   @DeleteDateColumn({ type: 'timestamp' })
-  deletedAt?: Date;
+  deletedAt: Date;
 }
