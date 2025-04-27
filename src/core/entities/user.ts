@@ -32,6 +32,9 @@ export class UserEntity extends Base {
   })
   public type: UserType;
 
+  @Column({ default: false })
+  firstAccess: boolean;
+
   @OneToMany(
     (): ObjectType<AppointmentEntity> => AppointmentEntity,
     (appointment: AppointmentEntity): UserEntity => appointment.Patient,

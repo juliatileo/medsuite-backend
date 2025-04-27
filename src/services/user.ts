@@ -56,6 +56,10 @@ export class UserService implements IUserService {
       expiresIn: '1d',
     });
 
+    if (body.patientInfo) {
+      await this.patientInfoRepository.save({ ...body.patientInfo, userId: user.id });
+    }
+
     return { user, token };
   }
 
@@ -69,7 +73,7 @@ export class UserService implements IUserService {
     await this.userRepository.save(body);
 
     if (body.patientInfo) {
-      await this.patientInfoRepository.save(body.patientInfo);
+      await this.patientInfoRepository.save({ ...body.patientInfo, userId: user.id });
     }
 
     return { ...user, ...body };
