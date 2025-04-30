@@ -24,7 +24,7 @@ export class PatientInfoEntity extends Base {
   bloodType: string;
 
   @Column()
-  sex: 'M' | 'F';
+  sex: 'M' | 'F' | 'Prefiro não dizer';
 
   @Column()
   userId: string;
