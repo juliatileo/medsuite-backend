@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 
 import dataSource from '@core/database';
 import { UserEntity, UserType } from '@core/entities/user';
@@ -32,5 +32,9 @@ export class UserRepository implements IUserRepository {
 
   async getByEmail(email: string): Promise<UserEntity | null> {
     return this.repository.findOne({ where: { email } });
+  }
+
+  async findOne(params: FindOneOptions<UserEntity>): Promise<UserEntity | null> {
+    return this.repository.findOne(params);
   }
 }

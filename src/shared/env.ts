@@ -9,6 +9,9 @@ export default function getEnv(): IEnv {
     DATABASE_NAME: database,
     AUTH_SECRET: secret,
     SERVER_URL: url,
+    RESET_TOKEN_IMPLEMENTATION: resetTokenImplementation,
+    DEFAULT_RESET_TOKEN: defaultResetToken,
+    WEB_URL: webUrl,
   } = process.env;
 
   return {
@@ -21,9 +24,14 @@ export default function getEnv(): IEnv {
     },
     auth: {
       secret,
+      resetTokenImplementation: resetTokenImplementation === 'true',
+      defaultResetToken,
     },
     server: {
       url,
+    },
+    web: {
+      url: webUrl,
     },
   };
 }

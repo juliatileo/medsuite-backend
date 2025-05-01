@@ -54,4 +54,14 @@ export class UserController extends BaseHttpController implements interfaces.Con
   ): Promise<{ user: UserEntity; token: string }> {
     return this.userService.login({ email, password });
   }
+
+  @httpPut('/forgot-password')
+  async forgotPassword(@requestBody() { email }: { email: string }): Promise<string> {
+    return this.userService.forgotPassword(email);
+  }
+
+  @httpPut('/reset-password')
+  async resetPassword(@requestBody() body: { resetToken: string; password: string }): Promise<void> {
+    return this.userService.resetPassword(body);
+  }
 }

@@ -35,6 +35,12 @@ export class UserEntity extends Base {
   @Column({ default: false })
   firstAccess: boolean;
 
+  @Column()
+  resetToken?: string;
+
+  @Column()
+  resetTokenExpiration?: Date;
+
   @OneToMany(
     (): ObjectType<AppointmentEntity> => AppointmentEntity,
     (appointment: AppointmentEntity): UserEntity => appointment.Patient,

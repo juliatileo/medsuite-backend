@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { inject, injectable } from 'inversify';
 import jwt from 'jsonwebtoken';
+import { DateTime } from 'luxon';
 
 import { UserEntity } from '@core/entities/user';
 import { IPatientInfoRepository } from '@core/repositories/interfaces/patient-info-repository';
@@ -9,12 +10,14 @@ import { TYPES } from '@core/types';
 import { HttpError } from '@core/types/error';
 
 import getEnv from '@shared/env';
+import { IEnv } from '@shared/types/env.types';
 
 import { IUserService } from './interfaces/user';
 
-const env = getEnv();
 @injectable()
 export class UserService implements IUserService {
+  private env: IEnv = getEnv();
+
   constructor(
     @inject(TYPES.UserRepository)
     private readonly userRepository: IUserRepository,
@@ -41,7 +44,7 @@ export class UserService implements IUserService {
   }
 
   async save(body: UserEntity): Promise<{ user: UserEntity; token: string }> {
-    if (!env.auth.secret) {
+    if (!this.env.auth.secret) {
       throw new HttpError('Secret is empty', 500);
     }
 
@@ -52,7 +55,7 @@ export class UserService implements IUserService {
       password,
     });
 
-    const token = jwt.sign({ userId: user.id, email: user.email, type: user.type }, env.auth.secret, {
+    const token = jwt.sign({ userId: user.id, email: user.email, type: user.type }, this.env.auth.secret, {
       expiresIn: '1d',
     });
 
@@ -92,12 +95,53 @@ export class UserService implements IUserService {
       throw new HttpError('Incorrect password', 400);
     }
 
-    if (!env.auth.secret) {
+    if (!this.env.auth.secret) {
       throw new HttpError('Secret is empty', 500);
     }
 
-    const token = jwt.sign({ ...user }, env.auth.secret, { expiresIn: '1d' });
+    const token = jwt.sign({ ...user }, this.env.auth.secret, { expiresIn: '1d' });
 
     return { user, token };
+  }
+
+  async forgotPassword(email: string): Promise<string> {
+    const user = await this.userRepository.getByEmail(email);
+
+    if (!user) throw new HttpError('User not found', 404);
+
+    let resetToken = this.env.auth.defaultResetToken || '112233';
+
+    if (this.env.auth.resetTokenImplementation) {
+      if (!this.env.auth.secret) {
+        throw new HttpError('Secret is empty', 500);
+      }
+
+      resetToken = jwt.sign({ ...user }, this.env.auth.secret, { expiresIn: '1h' });
+    }
+
+    await this.userRepository.save({
+      ...user,
+      resetToken,
+      resetTokenExpiration: DateTime.now().plus({ hour: 1 }).toJSDate(),
+    });
+
+    return `${this.env.web.url}/reset-password?token=${resetToken}`;
+  }
+
+  async resetPassword({ resetToken, password }: { resetToken: string; password: string }): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { resetToken: resetToken } });
+
+    if (!user || !user.resetTokenExpiration || user.resetTokenExpiration < DateTime.now().toJSDate()) {
+      throw new HttpError('Expired or invalid token', 404);
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await this.userRepository.save({
+      ...user,
+      password: hashedPassword,
+      resetToken: undefined,
+      resetTokenExpiration: undefined,
+    });
   }
 }

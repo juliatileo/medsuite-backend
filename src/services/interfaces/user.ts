@@ -7,4 +7,6 @@ export interface IUserService {
   update(body: UserEntity): Promise<UserEntity>;
   login({ email, password }: { email: string; password: string }): Promise<{ user: UserEntity; token: string }>;
   getById(id: string): Promise<UserEntity>;
+  forgotPassword(email: string): Promise<string>;
+  resetPassword(params: { resetToken: string; password: string }): Promise<void>;
 }
