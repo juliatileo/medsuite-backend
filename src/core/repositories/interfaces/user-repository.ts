@@ -1,3 +1,5 @@
+import { FindOneOptions } from 'typeorm';
+
 import { UserEntity } from '@entities/user';
 
 export interface IUserRepository {

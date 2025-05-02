@@ -35,11 +35,11 @@ export class UserEntity extends Base {
   @Column({ default: false })
   firstAccess: boolean;
 
-  @Column()
-  resetToken?: string;
+  @Column({ type: 'varchar', nullable: true })
+  resetToken?: string | null;
 
-  @Column()
-  resetTokenExpiration?: Date;
+  @Column({ type: 'timestamp', nullable: true })
+  resetTokenExpiration?: Date | null;
 
   @OneToMany(
     (): ObjectType<AppointmentEntity> => AppointmentEntity,

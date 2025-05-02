@@ -140,8 +140,8 @@ export class UserService implements IUserService {
     await this.userRepository.save({
       ...user,
       password: hashedPassword,
-      resetToken: undefined,
-      resetTokenExpiration: undefined,
+      resetToken: null,
+      resetTokenExpiration: null,
     });
   }
 }
