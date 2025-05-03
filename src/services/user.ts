@@ -6,6 +6,7 @@ import { DateTime } from 'luxon';
 import { UserEntity } from '@core/entities/user';
 import { IPatientInfoRepository } from '@core/repositories/interfaces/patient-info-repository';
 import { IUserRepository } from '@core/repositories/interfaces/user-repository';
+import { IWhatsAppService } from '@core/services/interfaces/whatsapp-interface';
 import { TYPES } from '@core/types';
 import { HttpError } from '@core/types/error';
 
@@ -23,6 +24,8 @@ export class UserService implements IUserService {
     private readonly userRepository: IUserRepository,
     @inject(TYPES.PatientInfoRepository)
     private readonly patientInfoRepository: IPatientInfoRepository,
+    @inject(TYPES.WhatsAppService)
+    private readonly whatsappService: IWhatsAppService,
   ) {}
 
   async list(): Promise<UserEntity[]> {
@@ -62,6 +65,13 @@ export class UserService implements IUserService {
     if (body.patientInfo) {
       await this.patientInfoRepository.save({ ...body.patientInfo, userId: user.id });
     }
+
+    await this.whatsappService.sendMessage({
+      to: user.cellphone,
+      name: user.name,
+      email: user.email,
+      password: body.password,
+    });
 
     return { user, token };
   }

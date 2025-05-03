@@ -12,6 +12,9 @@ export default function getEnv(): IEnv {
     RESET_TOKEN_IMPLEMENTATION: resetTokenImplementation,
     DEFAULT_RESET_TOKEN: defaultResetToken,
     WEB_URL: webUrl,
+    WHATSAPP_API_URL: whatsappApiUrl,
+    WHATSAPP_API_TOKEN: whatsappApiToken,
+    WHATSAPP_API_ID: whatsappApiId,
   } = process.env;
 
   return {
@@ -32,6 +35,11 @@ export default function getEnv(): IEnv {
     },
     web: {
       url: webUrl,
+    },
+    whatsapp: {
+      url: whatsappApiUrl,
+      token: whatsappApiToken,
+      id: whatsappApiId,
     },
   };
 }

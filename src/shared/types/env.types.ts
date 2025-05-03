@@ -17,4 +17,9 @@ export interface IEnv {
   web: {
     url: string | undefined;
   };
+  whatsapp: {
+    url: string | undefined;
+    token: string | undefined;
+    id: string | undefined;
+  };
 }
