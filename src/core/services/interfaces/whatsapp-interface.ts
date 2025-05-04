@@ -1,13 +1,20 @@
-import { AxiosInstance } from 'axios';
-
 export interface ISendMessageParams {
   to: string;
-  name: string;
-  email: string;
-  password: string;
+  template: string;
+  parameters: string[];
+  components?: {
+    type: 'body' | 'button';
+    sub_type: 'url';
+    index: number;
+    parameters: [
+      {
+        type: 'text';
+        text: string;
+      },
+    ];
+  }[];
 }
 
 export interface IWhatsAppService {
-  getInstance(): AxiosInstance;
   sendMessage(params: ISendMessageParams): Promise<void>;
 }

@@ -7,7 +7,7 @@ import { ISendMessageParams, IWhatsAppService } from './interfaces/whatsapp-inte
 export class WhatsAppService implements IWhatsAppService {
   private env = getEnv();
 
-  getInstance(): AxiosInstance {
+  private getInstance(): AxiosInstance {
     const instance = axios.create({
       baseURL: this.env.whatsapp.url,
       headers: { Authorization: `Bearer ${this.env.whatsapp.token}` },
@@ -16,43 +16,37 @@ export class WhatsAppService implements IWhatsAppService {
     return instance;
   }
 
-  async sendMessage({ to, name, email, password }: ISendMessageParams): Promise<void> {
+  async sendMessage({ to, template, parameters, components: additionalComponents }: ISendMessageParams): Promise<void> {
     const instance = this.getInstance();
 
     try {
+      const components = [
+        {
+          type: 'body',
+          parameters: parameters.map((parameter) => ({ type: 'text', text: parameter })),
+        },
+        ,
+      ];
+
+      if (additionalComponents) {
+        components.push(...additionalComponents);
+      }
+
       await instance.post(`/${this.env.whatsapp.id}/messages`, {
         messaging_product: 'whatsapp',
-        to,
+        to: `55${to}`,
         type: 'template',
         template: {
-          name: 'account_created',
+          name: template,
           language: {
             code: 'pt_BR',
           },
-          components: [
-            {
-              type: 'body',
-              parameters: [
-                {
-                  type: 'text',
-                  text: name,
-                },
-                {
-                  type: 'text',
-                  text: email,
-                },
-                {
-                  type: 'text',
-                  text: password,
-                },
-              ],
-            },
-          ],
+          components,
         },
       });
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
+      console.error(error);
     }
   }
 }

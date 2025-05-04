@@ -9,6 +9,7 @@ import { IUserRepository } from '@core/repositories/interfaces/user-repository';
 import { IWhatsAppService } from '@core/services/interfaces/whatsapp-interface';
 import { TYPES } from '@core/types';
 import { HttpError } from '@core/types/error';
+import { WhatsappTemplate } from '@core/types/whatsapp';
 
 import getEnv from '@shared/env';
 import { IEnv } from '@shared/types/env.types';
@@ -66,12 +67,11 @@ export class UserService implements IUserService {
       await this.patientInfoRepository.save({ ...body.patientInfo, userId: user.id });
     }
 
-    await this.whatsappService.sendMessage({
-      to: user.cellphone,
-      name: user.name,
-      email: user.email,
-      password: body.password,
-    });
+    // await this.whatsappService.sendMessage({
+    //   to: user.cellphone,
+    //   template: WhatsappTemplate.ACCOUNT_CREATED,
+    //   parameters: [user.name, user.email, body.password],
+    // });
 
     return { user, token };
   }
@@ -135,7 +135,26 @@ export class UserService implements IUserService {
       resetTokenExpiration: DateTime.now().plus({ hour: 1 }).toJSDate(),
     });
 
-    return `${this.env.web.url}/reset-password?token=${resetToken}`;
+    await this.whatsappService.sendMessage({
+      to: user.cellphone,
+      template: WhatsappTemplate.RESET_PASSWORD_TOKEN,
+      parameters: [resetToken],
+      components: [
+        {
+          type: 'button',
+          sub_type: 'url',
+          index: 0,
+          parameters: [
+            {
+              type: 'text',
+              text: resetToken,
+            },
+          ],
+        },
+      ],
+    });
+
+    return `/reset-password?token=${resetToken}`;
   }
 
   async resetPassword({ resetToken, password }: { resetToken: string; password: string }): Promise<void> {
