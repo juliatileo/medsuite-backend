@@ -83,6 +83,10 @@ export class UserService implements IUserService {
       throw new HttpError('User not found', 404);
     }
 
+    if (body.password) {
+      body.password = await bcrypt.hash(body.password, 10);
+    }
+
     await this.userRepository.save(body);
 
     if (body.patientInfo) {
