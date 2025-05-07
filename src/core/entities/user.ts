@@ -24,6 +24,9 @@ export class UserEntity extends Base {
   @Column({ nullable: false })
   public password: string;
 
+  @Column({ nullable: false })
+  public taxIdentifier: string;
+
   @Column({
     type: 'enum',
     enum: UserType,

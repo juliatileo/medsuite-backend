@@ -9,6 +9,7 @@ import { IUserRepository } from '@core/repositories/interfaces/user-repository';
 import { IWhatsAppService } from '@core/services/interfaces/whatsapp-interface';
 import { TYPES } from '@core/types';
 import { HttpError } from '@core/types/error';
+import { IUsersSearchParameters, Pagination } from '@core/types/pagination';
 import { WhatsappTemplate } from '@core/types/whatsapp';
 
 import getEnv from '@shared/env';
@@ -33,8 +34,8 @@ export class UserService implements IUserService {
     return this.userRepository.list();
   }
 
-  async listPatients(): Promise<UserEntity[]> {
-    return this.userRepository.listPatients();
+  async getPaginated(params: IUsersSearchParameters): Promise<Pagination<UserEntity>> {
+    return this.userRepository.getPaginated(params);
   }
 
   async getById(id: string): Promise<UserEntity> {

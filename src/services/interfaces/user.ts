@@ -1,8 +1,9 @@
 import { UserEntity } from '@core/entities/user';
+import { IUsersSearchParameters, Pagination } from '@core/types/pagination';
 
 export interface IUserService {
   list(): Promise<UserEntity[]>;
-  listPatients(): Promise<UserEntity[]>;
+  getPaginated(params: IUsersSearchParameters): Promise<Pagination<UserEntity>>;
   save(body: UserEntity): Promise<{ user: UserEntity; token: string }>;
   update(body: UserEntity): Promise<UserEntity>;
   login({ email, password }: { email: string; password: string }): Promise<{ user: UserEntity; token: string }>;

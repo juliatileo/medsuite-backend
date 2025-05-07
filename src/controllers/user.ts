@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { inject } from 'inversify';
 import {
   BaseHttpController,
@@ -6,16 +7,21 @@ import {
   httpPost,
   httpPut,
   interfaces,
+  queryParam,
+  request,
   requestBody,
   requestParam,
 } from 'inversify-express-utils';
 
 import { UserEntity } from '@core/entities/user';
 import { TYPES } from '@core/types';
+import { IUsersSearchParameters, Pagination } from '@core/types/pagination';
 
 import { IUserService } from '@services/interfaces/user';
 
 import { auth } from '@middlewares/auth';
+
+import { controllerPaginationHelper } from '../helpers';
 
 @controller('/user')
 export class UserController extends BaseHttpController implements interfaces.Controller {
@@ -28,9 +34,21 @@ export class UserController extends BaseHttpController implements interfaces.Con
     return this.userService.list();
   }
 
-  @httpGet('/patients', auth)
-  async listPatients(): Promise<UserEntity[]> {
-    return this.userService.listPatients();
+  @httpGet('/get-paginated', auth)
+  async getPaginated(
+    @request() req: Request,
+    @queryParam() queryParams: IUsersSearchParameters,
+  ): Promise<Pagination<UserEntity>> {
+    const { name, taxIdentifier, type } = queryParams;
+
+    const searchParameter: IUsersSearchParameters = {
+      ...controllerPaginationHelper(req.query),
+      name,
+      taxIdentifier,
+      type,
+    };
+
+    return this.userService.getPaginated(searchParameter);
   }
 
   @httpGet('/:id', auth)
