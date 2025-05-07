@@ -7,6 +7,8 @@ import { IUsersSearchParameters, Pagination } from '@core/types/pagination';
 
 import { IUserRepository } from '@repositories/interfaces/user-repository';
 
+import { Like } from '@shared/utils/like';
+
 @injectable()
 export class UserRepository implements IUserRepository {
   private repository: Repository<UserEntity>;
@@ -27,11 +29,11 @@ export class UserRepository implements IUserRepository {
       .orderBy('users.createdAt', params.sort);
 
     if (params?.name) {
-      query.andWhere('users.name ilike :name', { name: params.name });
+      query.andWhere('users.name like :name', { name: Like(params.name) });
     }
 
     if (params?.taxIdentifier) {
-      query.andWhere('users.name ilike :taxIdentifier', { taxIdentifier: params.taxIdentifier });
+      query.andWhere('users.taxIdentifier like :taxIdentifier', { taxIdentifier: Like(params.taxIdentifier) });
     }
 
     if (params?.type) {

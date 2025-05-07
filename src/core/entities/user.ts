@@ -24,7 +24,7 @@ export class UserEntity extends Base {
   @Column({ nullable: false })
   public password: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, unique: true })
   public taxIdentifier: string;
 
   @Column({
