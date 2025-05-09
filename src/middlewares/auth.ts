@@ -28,9 +28,7 @@ export function auth(req: Request, res: Response, next: NextFunction): void {
     req.session = decoded;
 
     return next();
-  } catch (err) {
-    console.log(err);
-
+  } catch {
     throw new HttpError('Authentication error', 401);
   }
 }
