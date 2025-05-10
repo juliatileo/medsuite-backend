@@ -29,11 +29,11 @@ export class UserRepository implements IUserRepository {
       .orderBy('users.createdAt', params.sort);
 
     if (params?.name) {
-      query.andWhere('users.name like :name', { name: Like(params.name) });
+      query.orWhere('users.name like :name', { name: Like(params.name) });
     }
 
     if (params?.taxIdentifier) {
-      query.andWhere('users.taxIdentifier like :taxIdentifier', { taxIdentifier: Like(params.taxIdentifier) });
+      query.orWhere('users.taxIdentifier like :taxIdentifier', { taxIdentifier: Like(params.taxIdentifier) });
     }
 
     if (params?.type) {
