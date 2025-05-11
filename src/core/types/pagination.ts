@@ -14,8 +14,15 @@ export type SearchParameterBase = {
   sort?: 'ASC' | 'DESC';
 };
 
-export interface IUsersSearchParameters extends SearchParameterBase {
+export interface IUserSearchParameters extends SearchParameterBase {
   name: string;
   taxIdentifier: string;
   type: UserType;
+}
+
+export interface IAppointmentSearchParameters extends SearchParameterBase {
+  patientName: string;
+  doctorName: string;
+  doctorId: string;
+  patientId: string;
 }

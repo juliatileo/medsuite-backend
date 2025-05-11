@@ -15,7 +15,7 @@ import {
 
 import { UserEntity } from '@core/entities/user';
 import { TYPES } from '@core/types';
-import { IUsersSearchParameters, Pagination } from '@core/types/pagination';
+import { IUserSearchParameters, Pagination } from '@core/types/pagination';
 
 import { IUserService } from '@services/interfaces/user';
 
@@ -37,11 +37,11 @@ export class UserController extends BaseHttpController implements interfaces.Con
   @httpGet('/get-paginated', auth)
   async getPaginated(
     @request() req: Request,
-    @queryParam() queryParams: IUsersSearchParameters,
+    @queryParam() queryParams: IUserSearchParameters,
   ): Promise<Pagination<UserEntity>> {
     const { name, taxIdentifier, type } = queryParams;
 
-    const searchParameter: IUsersSearchParameters = {
+    const searchParameter: IUserSearchParameters = {
       ...controllerPaginationHelper(req.query),
       name,
       taxIdentifier,

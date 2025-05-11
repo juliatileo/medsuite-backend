@@ -3,7 +3,7 @@ import { FindOneOptions, Repository } from 'typeorm';
 
 import dataSource from '@core/database';
 import { UserEntity } from '@core/entities/user';
-import { IUsersSearchParameters, Pagination } from '@core/types/pagination';
+import { IUserSearchParameters, Pagination } from '@core/types/pagination';
 
 import { IUserRepository } from '@repositories/interfaces/user-repository';
 
@@ -21,7 +21,7 @@ export class UserRepository implements IUserRepository {
     return this.repository.find();
   }
 
-  async getPaginated(params: IUsersSearchParameters): Promise<Pagination<UserEntity>> {
+  async getPaginated(params: IUserSearchParameters): Promise<Pagination<UserEntity>> {
     const query = this.repository
       .createQueryBuilder('users')
       .offset(params.offset || 0)
