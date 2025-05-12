@@ -3,7 +3,7 @@ import { FindOneOptions, Repository } from 'typeorm';
 
 import dataSource from '@core/database';
 import { UserEntity } from '@core/entities/user';
-import { IUserSearchParameters, Pagination } from '@core/types/pagination';
+import { IUserSearchParameters } from '@core/types/pagination';
 
 import { IUserRepository } from '@repositories/interfaces/user-repository';
 
@@ -21,12 +21,8 @@ export class UserRepository implements IUserRepository {
     return this.repository.find();
   }
 
-  async getPaginated(params: IUserSearchParameters): Promise<Pagination<UserEntity>> {
-    const query = this.repository
-      .createQueryBuilder('users')
-      .offset(params.offset || 0)
-      .limit(params.limit || 10)
-      .orderBy('users.createdAt', params.sort);
+  async getFiltered(params: IUserSearchParameters): Promise<UserEntity[]> {
+    const query = this.repository.createQueryBuilder('users').orderBy('users.createdAt', 'DESC');
 
     if (params?.name) {
       query.orWhere('users.name like :name', { name: Like(params.name) });
@@ -40,9 +36,7 @@ export class UserRepository implements IUserRepository {
       query.andWhere('users.type = :type', { type: params.type });
     }
 
-    const [rows, count] = await query.getManyAndCount();
-
-    return { rows, count };
+    return query.getMany();
   }
 
   async getById(id: string): Promise<UserEntity | null> {

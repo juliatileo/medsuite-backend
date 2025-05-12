@@ -15,13 +15,11 @@ import {
 
 import { UserEntity } from '@core/entities/user';
 import { TYPES } from '@core/types';
-import { IUserSearchParameters, Pagination } from '@core/types/pagination';
+import { IUserSearchParameters } from '@core/types/pagination';
 
 import { IUserService } from '@services/interfaces/user';
 
 import { auth } from '@middlewares/auth';
-
-import { controllerPaginationHelper } from '../helpers';
 
 @controller('/user')
 export class UserController extends BaseHttpController implements interfaces.Controller {
@@ -35,20 +33,16 @@ export class UserController extends BaseHttpController implements interfaces.Con
   }
 
   @httpGet('/get-paginated', auth)
-  async getPaginated(
-    @request() req: Request,
-    @queryParam() queryParams: IUserSearchParameters,
-  ): Promise<Pagination<UserEntity>> {
+  async getFiltered(@request() req: Request, @queryParam() queryParams: IUserSearchParameters): Promise<UserEntity[]> {
     const { name, taxIdentifier, type } = queryParams;
 
     const searchParameter: IUserSearchParameters = {
-      ...controllerPaginationHelper(req.query),
       name,
       taxIdentifier,
       type,
     };
 
-    return this.userService.getPaginated(searchParameter);
+    return this.userService.getFiltered(searchParameter);
   }
 
   @httpGet('/:id', auth)

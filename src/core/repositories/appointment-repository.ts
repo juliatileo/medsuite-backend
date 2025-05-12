@@ -3,7 +3,9 @@ import { Repository } from 'typeorm';
 
 import dataSource from '@core/database';
 import { AppointmentEntity } from '@core/entities/appointment';
-import { IAppointmentSearchParameters, Pagination } from '@core/types/pagination';
+import { IAppointmentSearchParameters } from '@core/types/pagination';
+
+import { Like } from '@shared/utils/like';
 
 import { IAppointmentRepository } from './interfaces/appointment-repository';
 
@@ -33,14 +35,12 @@ export class AppointmentRepository implements IAppointmentRepository {
     });
   }
 
-  async getPaginated(params: IAppointmentSearchParameters): Promise<Pagination<AppointmentEntity>> {
+  async getFiltered(params: IAppointmentSearchParameters): Promise<AppointmentEntity[]> {
     const query = this.repository
       .createQueryBuilder('appointments')
       .leftJoinAndSelect('appointments.Doctor', 'doctor')
       .leftJoinAndSelect('appointments.Patient', 'patient')
-      .offset(params.offset || 0)
-      .limit(params.limit || 10)
-      .orderBy('appointments.createdAt', params.sort);
+      .orderBy('appointments.createdAt', 'DESC');
 
     if (params.doctorId) {
       query.where('appointments.doctorId = :doctorId', { doctorId: params.doctorId });
@@ -50,17 +50,16 @@ export class AppointmentRepository implements IAppointmentRepository {
       query.where('appointments.patientId = :patientId', { patientId: params.patientId });
     }
 
-    if (params.doctorName) {
-      query.orWhere('doctor.name = :doctorName', { doctorName: params.doctorName });
-    }
+    if (params.doctorName && params.patientName)
+      query.andWhere('doctor.name like :doctorName or patient.name like :patientName', {
+        doctorName: Like(params.doctorName),
+        patientName: Like(params.patientName),
+      });
+    else if (params.doctorName) query.andWhere('doctor.name like :doctorName', { doctorName: Like(params.doctorName) });
+    else if (params.patientName)
+      query.andWhere('patient.name like :patientName', { patientName: Like(params.patientName) });
 
-    if (params.patientName) {
-      query.orWhere('patient.name = :patientName', { patientName: params.patientName });
-    }
-
-    const [rows, count] = await query.getManyAndCount();
-
-    return { rows, count };
+    return query.getMany();
   }
 
   async save(user: AppointmentEntity): Promise<AppointmentEntity> {

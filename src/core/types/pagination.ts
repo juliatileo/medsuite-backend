@@ -1,26 +1,12 @@
 import { UserType } from '@core/entities/user';
 
-export type Pagination<T> = {
-  rows: T[];
-  count: number;
-};
-
-export type SearchParameterBase = {
-  offset: number;
-  limit?: number;
-  page?: number;
-  orderBy: string;
-  isDESC: boolean;
-  sort?: 'ASC' | 'DESC';
-};
-
-export interface IUserSearchParameters extends SearchParameterBase {
+export interface IUserSearchParameters {
   name: string;
   taxIdentifier: string;
   type: UserType;
 }
 
-export interface IAppointmentSearchParameters extends SearchParameterBase {
+export interface IAppointmentSearchParameters {
   patientName: string;
   doctorName: string;
   doctorId: string;

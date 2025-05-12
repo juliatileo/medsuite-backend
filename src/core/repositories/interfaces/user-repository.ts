@@ -1,12 +1,12 @@
 import { FindOneOptions } from 'typeorm';
 
-import { IUserSearchParameters, Pagination } from '@core/types/pagination';
+import { IUserSearchParameters } from '@core/types/pagination';
 
 import { UserEntity } from '@entities/user';
 
 export interface IUserRepository {
   list(): Promise<UserEntity[]>;
-  getPaginated(params: IUserSearchParameters): Promise<Pagination<UserEntity>>;
+  getFiltered(params: IUserSearchParameters): Promise<UserEntity[]>;
   save(user: UserEntity): Promise<UserEntity>;
   getByEmail(email: string): Promise<UserEntity | null>;
   getById(id: string): Promise<UserEntity | null>;

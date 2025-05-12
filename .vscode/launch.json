@@ -8,10 +8,7 @@
       "program": "${file}",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run-script", "dev"],
-      "skipFiles": ["<node_internals>/**"],
-      "env": {
-        "teste": "kdds"
-      }
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

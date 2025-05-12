@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 import { AppointmentEntity } from '@core/entities/appointment';
 import { IAppointmentRepository } from '@core/repositories/interfaces/appointment-repository';
 import { TYPES } from '@core/types';
-import { IAppointmentSearchParameters, Pagination } from '@core/types/pagination';
+import { IAppointmentSearchParameters } from '@core/types/pagination';
 
 import { IAppointmentService } from './interfaces/appointment';
 
@@ -22,15 +22,11 @@ export class AppointmentService implements IAppointmentService {
     return this.appointmentRepository.listByDoctorId(doctorId);
   }
 
-  async getPaginated(params: IAppointmentSearchParameters): Promise<Pagination<AppointmentEntity>> {
-    return this.appointmentRepository.getPaginated(params);
+  async getFiltered(params: IAppointmentSearchParameters): Promise<AppointmentEntity[]> {
+    return this.appointmentRepository.getFiltered(params);
   }
 
   save(appointment: AppointmentEntity): Promise<AppointmentEntity> {
     return this.appointmentRepository.save(appointment);
-  }
-
-  listByDate(date: string): Promise<AppointmentEntity[]> {
-    return this.appointmentRepository.listByDate(new Date(date));
   }
 }
