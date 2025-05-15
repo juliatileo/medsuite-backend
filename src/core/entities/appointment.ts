@@ -3,6 +3,13 @@ import { Column, Entity, JoinColumn, ManyToOne, ObjectType } from 'typeorm';
 import Base from './dto/base';
 import { UserEntity } from './user';
 
+export enum AppointmentStatus {
+  SCHEDULED = 1,
+  CANCELED = 2,
+  PENDING_DONE = 4,
+  DONE = 3,
+}
+
 @Entity('appointments')
 export class AppointmentEntity extends Base {
   @Column()
@@ -10,6 +17,9 @@ export class AppointmentEntity extends Base {
 
   @Column()
   description: string;
+
+  @Column({ type: 'enum', enum: AppointmentStatus })
+  status: AppointmentStatus;
 
   @Column()
   patientId: string;

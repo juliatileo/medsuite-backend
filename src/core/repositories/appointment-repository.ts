@@ -40,7 +40,7 @@ export class AppointmentRepository implements IAppointmentRepository {
       .createQueryBuilder('appointments')
       .leftJoinAndSelect('appointments.Doctor', 'doctor')
       .leftJoinAndSelect('appointments.Patient', 'patient')
-      .orderBy('appointments.createdAt', 'DESC');
+      .orderBy('appointments.date', 'ASC');
 
     if (params.doctorId) {
       query.where('appointments.doctorId = :doctorId', { doctorId: params.doctorId });
