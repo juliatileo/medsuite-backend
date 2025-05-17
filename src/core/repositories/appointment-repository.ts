@@ -39,15 +39,14 @@ export class AppointmentRepository implements IAppointmentRepository {
     const query = this.repository
       .createQueryBuilder('appointments')
       .leftJoinAndSelect('appointments.Doctor', 'doctor')
-      .leftJoinAndSelect('appointments.Patient', 'patient')
-      .orderBy('appointments.date', 'ASC');
+      .leftJoinAndSelect('appointments.Patient', 'patient');
 
     if (params.doctorId) {
       query.where('appointments.doctorId = :doctorId', { doctorId: params.doctorId });
     }
 
     if (params.patientId) {
-      query.where('appointments.patientId = :patientId', { patientId: params.patientId });
+      query.andWhere('appointments.patientId = :patientId', { patientId: params.patientId });
     }
 
     if (params.doctorName && params.patientName)
@@ -58,6 +57,11 @@ export class AppointmentRepository implements IAppointmentRepository {
     else if (params.doctorName) query.andWhere('doctor.name like :doctorName', { doctorName: Like(params.doctorName) });
     else if (params.patientName)
       query.andWhere('patient.name like :patientName', { patientName: Like(params.patientName) });
+
+    // Ordena por: 1) futuros mais próximos, 2) passados por último
+    query.addOrderBy(`CASE WHEN appointments.date >= NOW() THEN 0 ELSE 1 END`, 'ASC');
+    query.addOrderBy(`CASE WHEN appointments.date >= NOW() THEN appointments.date END`, 'ASC');
+    query.addOrderBy(`CASE WHEN appointments.date < NOW() THEN appointments.date END`, 'DESC');
 
     return query.getMany();
   }
