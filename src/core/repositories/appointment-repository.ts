@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 
 import dataSource from '@core/database';
 import { AppointmentEntity } from '@core/entities/appointment';
@@ -58,7 +58,6 @@ export class AppointmentRepository implements IAppointmentRepository {
     else if (params.patientName)
       query.andWhere('patient.name like :patientName', { patientName: Like(params.patientName) });
 
-    // Ordena por: 1) futuros mais próximos, 2) passados por último
     query.addOrderBy(`CASE WHEN appointments.date >= NOW() THEN 0 ELSE 1 END`, 'ASC');
     query.addOrderBy(`CASE WHEN appointments.date >= NOW() THEN appointments.date END`, 'ASC');
     query.addOrderBy(`CASE WHEN appointments.date < NOW() THEN appointments.date END`, 'DESC');
@@ -68,5 +67,9 @@ export class AppointmentRepository implements IAppointmentRepository {
 
   async save(user: AppointmentEntity): Promise<AppointmentEntity> {
     return this.repository.save(user);
+  }
+
+  async getByWhere(options: FindManyOptions<AppointmentEntity>): Promise<AppointmentEntity[]> {
+    return this.repository.find(options);
   }
 }

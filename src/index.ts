@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as bodyParser from 'body-parser';
 import cors from 'cors';
 import { NextFunction, Request, Response, static as static_ } from 'express';
@@ -11,6 +12,7 @@ import { initializeDataSource } from '@core/database';
 import { HttpError } from '@core/types/error';
 
 import '@controllers/.';
+import '@jobs/jobs';
 
 initializeDataSource().then(() => {
   const server = new InversifyExpressServer(container, null, {
