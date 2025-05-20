@@ -50,14 +50,20 @@ export class AppointmentRepository implements IAppointmentRepository {
       query.where('appointments.patientId = :patientId', { patientId: params.patientId });
     }
 
-    if (params.doctorName && params.patientName)
-      query.andWhere('doctor.name like :doctorName or patient.name like :patientName', {
-        doctorName: Like(params.doctorName),
-        patientName: Like(params.patientName),
-      });
-    else if (params.doctorName) query.andWhere('doctor.name like :doctorName', { doctorName: Like(params.doctorName) });
-    else if (params.patientName)
-      query.andWhere('patient.name like :patientName', { patientName: Like(params.patientName) });
+    const paramsToMap = {
+      doctorName: 'doctor.name',
+      patientName: 'patient.name',
+      description: 'appointments.description',
+    };
+
+    const queryToAdd = Object.entries(paramsToMap)
+      .map(([key, value], i) => (i === 0 ? `${value} like :${key}` : ` or ${value} like :${key}`))
+      .join('');
+    const paramsToAdd = Object.keys(paramsToMap).map((key) => ({
+      [key]: Like(params[key as keyof IAppointmentSearchParameters] || ''),
+    }));
+
+    query.andWhere(queryToAdd, paramsToAdd);
 
     return query.getMany();
   }

@@ -7,8 +7,9 @@ export interface IUserSearchParameters {
 }
 
 export interface IAppointmentSearchParameters {
-  patientName: string;
-  doctorName: string;
+  patientName?: string;
+  doctorName?: string;
+  description?: string;
   doctorId: string;
   patientId: string;
 }
