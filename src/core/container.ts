@@ -16,11 +16,15 @@ import { IWhatsAppService } from './services/interfaces/whatsapp-interface';
 import { WhatsAppService } from './services/whatsapp';
 import { TYPES } from './types';
 
+export const coreContainerBind = (container: Container): void => {
+  container.bind<IUserService>(TYPES.UserService).to(UserService);
+  container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository);
+  container.bind<IAppointmentService>(TYPES.AppointmentService).to(AppointmentService);
+  container.bind<IAppointmentRepository>(TYPES.AppointmentRepository).to(AppointmentRepository);
+  container.bind<IPatientInfoRepository>(TYPES.PatientInfoRepository).to(PatientInfoRepository);
+  container.bind<IWhatsAppService>(TYPES.WhatsAppService).to(WhatsAppService);
+};
+
 export const container = new Container();
 
-container.bind<IUserService>(TYPES.UserService).to(UserService);
-container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository);
-container.bind<IAppointmentService>(TYPES.AppointmentService).to(AppointmentService);
-container.bind<IAppointmentRepository>(TYPES.AppointmentRepository).to(AppointmentRepository);
-container.bind<IPatientInfoRepository>(TYPES.PatientInfoRepository).to(PatientInfoRepository);
-container.bind<IWhatsAppService>(TYPES.WhatsAppService).to(WhatsAppService);
+coreContainerBind(container);

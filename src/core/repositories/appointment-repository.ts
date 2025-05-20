@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 
 import dataSource from '@core/database';
 import { AppointmentEntity } from '@core/entities/appointment';
@@ -39,15 +39,14 @@ export class AppointmentRepository implements IAppointmentRepository {
     const query = this.repository
       .createQueryBuilder('appointments')
       .leftJoinAndSelect('appointments.Doctor', 'doctor')
-      .leftJoinAndSelect('appointments.Patient', 'patient')
-      .orderBy('appointments.createdAt', 'DESC');
+      .leftJoinAndSelect('appointments.Patient', 'patient');
 
     if (params.doctorId) {
       query.where('appointments.doctorId = :doctorId', { doctorId: params.doctorId });
     }
 
     if (params.patientId) {
-      query.where('appointments.patientId = :patientId', { patientId: params.patientId });
+      query.andWhere('appointments.patientId = :patientId', { patientId: params.patientId });
     }
 
     if (params.doctorName || params.patientName || params.description) {
@@ -75,10 +74,18 @@ export class AppointmentRepository implements IAppointmentRepository {
       query.andWhere(queryToAdd, paramsToAdd);
     }
 
+    query.addOrderBy(`CASE WHEN appointments.date >= NOW() THEN 0 ELSE 1 END`, 'ASC');
+    query.addOrderBy(`CASE WHEN appointments.date >= NOW() THEN appointments.date END`, 'ASC');
+    query.addOrderBy(`CASE WHEN appointments.date < NOW() THEN appointments.date END`, 'DESC');
+
     return query.getMany();
   }
 
   async save(user: AppointmentEntity): Promise<AppointmentEntity> {
     return this.repository.save(user);
+  }
+
+  async getByWhere(options: FindManyOptions<AppointmentEntity>): Promise<AppointmentEntity[]> {
+    return this.repository.find(options);
   }
 }

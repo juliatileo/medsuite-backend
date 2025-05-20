@@ -91,6 +91,7 @@ export default [
             'module',
             '/^@src/',
             '/^@core/',
+            '/^@jobs/',
             '/^@controllers/',
             '/^@services/',
             '/^@entities/',

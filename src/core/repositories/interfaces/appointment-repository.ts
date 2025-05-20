@@ -1,3 +1,5 @@
+import { FindManyOptions } from 'typeorm';
+
 import { AppointmentEntity } from '@core/entities/appointment';
 import { IAppointmentSearchParameters } from '@core/types/pagination';
 
@@ -7,4 +9,5 @@ export interface IAppointmentRepository {
   listByDoctorId(doctorId: string): Promise<AppointmentEntity[]>;
   getFiltered(params: IAppointmentSearchParameters): Promise<AppointmentEntity[]>;
   save(appointment: AppointmentEntity): Promise<AppointmentEntity>;
+  getByWhere(options: FindManyOptions<AppointmentEntity>): Promise<AppointmentEntity[]>;
 }

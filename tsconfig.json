@@ -21,7 +21,8 @@
       "@repositories/*": ["./src/core/repositories/*"],
       "@shared/*": ["./src/shared/*"],
       "@middlewares/*": ["./src/middlewares/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@utils/*": ["./src/utils/*"],
+      "@jobs/*": ["./src/jobs/*"]
     }
   }
 }
