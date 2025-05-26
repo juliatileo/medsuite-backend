@@ -32,6 +32,11 @@ export class UserController extends BaseHttpController implements interfaces.Con
     return this.userService.list();
   }
 
+  @httpGet('/patients', auth)
+  async listPatients(): Promise<UserEntity[]> {
+    return this.userService.listPatients();
+  }
+
   @httpGet('/get-paginated', auth)
   async getFiltered(@request() req: Request, @queryParam() queryParams: IUserSearchParameters): Promise<UserEntity[]> {
     const { name, taxIdentifier, type } = queryParams;
