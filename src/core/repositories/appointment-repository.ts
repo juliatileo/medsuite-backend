@@ -49,14 +49,30 @@ export class AppointmentRepository implements IAppointmentRepository {
       query.andWhere('appointments.patientId = :patientId', { patientId: params.patientId });
     }
 
-    if (params.doctorName && params.patientName)
-      query.andWhere('doctor.name like :doctorName or patient.name like :patientName', {
-        doctorName: Like(params.doctorName),
-        patientName: Like(params.patientName),
-      });
-    else if (params.doctorName) query.andWhere('doctor.name like :doctorName', { doctorName: Like(params.doctorName) });
-    else if (params.patientName)
-      query.andWhere('patient.name like :patientName', { patientName: Like(params.patientName) });
+    if (params.doctorName || params.patientName || params.description) {
+      const paramsToMap = {
+        doctorName: 'doctor.name',
+        patientName: 'patient.name',
+        description: 'appointments.description',
+      };
+
+      const queryToAdd = Object.entries(paramsToMap)
+        .filter(([key]) => params[key as keyof IAppointmentSearchParameters])
+        .map(([key, value], i) => (i === 0 ? `${value} LIKE :${key}` : ` OR ${value} LIKE :${key}`))
+        .join('');
+
+      const paramsToAdd = Object.entries(paramsToMap).reduce(
+        (acc, [key]) => {
+          if (params[key as keyof IAppointmentSearchParameters]) {
+            acc[key] = Like(`%${params[key as keyof IAppointmentSearchParameters]}%`);
+          }
+          return acc;
+        },
+        {} as Record<string, unknown>,
+      );
+
+      query.andWhere(queryToAdd, paramsToAdd);
+    }
 
     query.addOrderBy(`CASE WHEN appointments.date >= NOW() THEN 0 ELSE 1 END`, 'ASC');
     query.addOrderBy(`CASE WHEN appointments.date >= NOW() THEN appointments.date END`, 'ASC');
