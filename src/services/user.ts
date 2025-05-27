@@ -34,6 +34,10 @@ export class UserService implements IUserService {
     return this.userRepository.list();
   }
 
+  async listPatients(): Promise<UserEntity[]> {
+    return this.userRepository.listPatients();
+  }
+
   async getFiltered(params: IUserSearchParameters): Promise<UserEntity[]> {
     return this.userRepository.getFiltered(params);
   }

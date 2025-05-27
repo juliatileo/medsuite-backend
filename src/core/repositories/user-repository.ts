@@ -2,7 +2,7 @@ import { injectable } from 'inversify';
 import { FindOneOptions, Repository } from 'typeorm';
 
 import dataSource from '@core/database';
-import { UserEntity } from '@core/entities/user';
+import { UserEntity, UserType } from '@core/entities/user';
 import { IUserSearchParameters } from '@core/types/pagination';
 
 import { IUserRepository } from '@repositories/interfaces/user-repository';
@@ -19,6 +19,14 @@ export class UserRepository implements IUserRepository {
 
   async list(): Promise<UserEntity[]> {
     return this.repository.find();
+  }
+
+  async listPatients(): Promise<UserEntity[]> {
+    return this.repository.find({
+      where: { type: UserType.PATIENT },
+      select: ['id', 'name'],
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async getFiltered(params: IUserSearchParameters): Promise<UserEntity[]> {
