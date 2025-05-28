@@ -74,9 +74,19 @@ export class AppointmentRepository implements IAppointmentRepository {
       query.andWhere(queryToAdd, paramsToAdd);
     }
 
-    query.addOrderBy(`CASE WHEN appointments.date >= NOW() THEN 0 ELSE 1 END`, 'ASC');
-    query.addOrderBy(`CASE WHEN appointments.date >= NOW() THEN appointments.date END`, 'ASC');
-    query.addOrderBy(`CASE WHEN appointments.date < NOW() THEN appointments.date END`, 'DESC');
+    // Ordena por status 1 e 3 primeiro, depois pela data mais próxima da data atual
+    query
+      .orderBy(
+        `
+      CASE 
+        WHEN appointments.status = 1 THEN 0
+        WHEN appointments.status = 3 THEN 1
+        ELSE 2
+      END
+    `,
+        'ASC',
+      )
+      .addOrderBy('ABS(TIMESTAMPDIFF(SECOND, NOW(), appointments.date))', 'ASC');
 
     return query.getMany();
   }
