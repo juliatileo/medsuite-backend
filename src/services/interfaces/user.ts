@@ -1,9 +1,9 @@
-import { UserEntity } from '@core/entities/user';
+import { UserEntity, UserType } from '@core/entities/user';
 import { IUserSearchParameters } from '@core/types/pagination';
 
 export interface IUserService {
   list(): Promise<UserEntity[]>;
-  listPatients(): Promise<UserEntity[]>;
+  listByType(type: UserType): Promise<UserEntity[]>;
   getFiltered(params: IUserSearchParameters): Promise<UserEntity[]>;
   save(body: UserEntity): Promise<{ user: UserEntity; token: string }>;
   update(body: UserEntity): Promise<UserEntity>;

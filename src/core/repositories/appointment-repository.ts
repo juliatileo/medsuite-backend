@@ -38,11 +38,11 @@ export class AppointmentRepository implements IAppointmentRepository {
   async getFiltered(params: IAppointmentSearchParameters): Promise<AppointmentEntity[]> {
     const query = this.repository
       .createQueryBuilder('appointments')
-      .leftJoinAndSelect('appointments.Doctor', 'doctor')
-      .leftJoinAndSelect('appointments.Patient', 'patient');
+      .innerJoinAndSelect('appointments.Doctor', 'doctor')
+      .innerJoinAndSelect('appointments.Patient', 'patient');
 
     if (params.doctorId) {
-      query.where('appointments.doctorId = :doctorId', { doctorId: params.doctorId });
+      query.andWhere('appointments.doctorId = :doctorId', { doctorId: params.doctorId });
     }
 
     if (params.patientId) {
@@ -74,18 +74,18 @@ export class AppointmentRepository implements IAppointmentRepository {
       query.andWhere(queryToAdd, paramsToAdd);
     }
 
-    // Ordena por status 1 e 3 primeiro, depois pela data mais próxima da data atual
     query
       .orderBy(
         `
       CASE 
-        WHEN appointments.status = 1 THEN 0
-        WHEN appointments.status = 3 THEN 1
-        ELSE 2
+      WHEN appointments.status = 4 THEN 0
+      WHEN appointments.status = 1 THEN 1
+      ELSE 2
       END
     `,
         'ASC',
       )
+      .addOrderBy(`CASE WHEN appointments.date >= NOW() THEN 0 ELSE 1 END`, 'ASC')
       .addOrderBy('ABS(TIMESTAMPDIFF(SECOND, NOW(), appointments.date))', 'ASC');
 
     return query.getMany();

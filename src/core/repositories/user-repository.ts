@@ -21,9 +21,9 @@ export class UserRepository implements IUserRepository {
     return this.repository.find();
   }
 
-  async listPatients(): Promise<UserEntity[]> {
+  async listByType(type: UserType): Promise<UserEntity[]> {
     return this.repository.find({
-      where: { type: UserType.PATIENT },
+      where: { type },
       select: ['id', 'name'],
       order: { createdAt: 'DESC' },
     });

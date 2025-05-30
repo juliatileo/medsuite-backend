@@ -13,7 +13,7 @@ import {
   requestParam,
 } from 'inversify-express-utils';
 
-import { UserEntity } from '@core/entities/user';
+import { UserEntity, UserType } from '@core/entities/user';
 import { TYPES } from '@core/types';
 import { IUserSearchParameters } from '@core/types/pagination';
 
@@ -32,9 +32,9 @@ export class UserController extends BaseHttpController implements interfaces.Con
     return this.userService.list();
   }
 
-  @httpGet('/patients', auth)
-  async listPatients(): Promise<UserEntity[]> {
-    return this.userService.listPatients();
+  @httpGet('/list-by-type', auth)
+  async listPatients(@queryParam('type') type: UserType): Promise<UserEntity[]> {
+    return this.userService.listByType(type);
   }
 
   @httpGet('/get-paginated', auth)

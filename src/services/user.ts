@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 import jwt from 'jsonwebtoken';
 import { DateTime } from 'luxon';
 
-import { UserEntity } from '@core/entities/user';
+import { UserEntity, UserType } from '@core/entities/user';
 import { IPatientInfoRepository } from '@core/repositories/interfaces/patient-info-repository';
 import { IUserRepository } from '@core/repositories/interfaces/user-repository';
 import { IWhatsAppService } from '@core/services/interfaces/whatsapp-interface';
@@ -34,8 +34,8 @@ export class UserService implements IUserService {
     return this.userRepository.list();
   }
 
-  async listPatients(): Promise<UserEntity[]> {
-    return this.userRepository.listPatients();
+  async listByType(type: UserType): Promise<UserEntity[]> {
+    return this.userRepository.listByType(type);
   }
 
   async getFiltered(params: IUserSearchParameters): Promise<UserEntity[]> {
