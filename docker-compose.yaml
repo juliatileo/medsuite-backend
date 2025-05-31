@@ -6,6 +6,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: medsuite
   app:
-    image: medsuite
+    image: medsuite-backend
     ports:
       - 13000:3333

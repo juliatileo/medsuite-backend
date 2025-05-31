@@ -86,7 +86,7 @@ export class AppointmentRepository implements IAppointmentRepository {
         'ASC',
       )
       .addOrderBy(`CASE WHEN appointments.date >= NOW() THEN 0 ELSE 1 END`, 'ASC')
-      .addOrderBy('ABS(TIMESTAMPDIFF(SECOND, NOW(), appointments.date))', 'ASC');
+      .addOrderBy('ABS(EXTRACT(EPOCH FROM (appointments.date - NOW())))', 'ASC');
 
     return query.getMany();
   }
