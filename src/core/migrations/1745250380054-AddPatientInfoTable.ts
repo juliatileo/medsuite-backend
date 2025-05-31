@@ -8,9 +8,10 @@ export class AddPatientInfoTable1745250380054 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'varchar',
+            type: 'uuid',
             isPrimary: true,
             generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'birthDate',
@@ -44,7 +45,7 @@ export class AddPatientInfoTable1745250380054 implements MigrationInterface {
           },
           {
             name: 'userId',
-            type: 'varchar',
+            type: 'uuid',
             isNullable: false,
             isUnique: true,
           },

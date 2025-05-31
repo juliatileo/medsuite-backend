@@ -8,7 +8,7 @@ const {
 } = getEnv();
 
 const dataSource: DataSource = new DataSource({
-  type: 'mysql',
+  type: 'postgres',
   host,
   port: parseInt(port || '5432', 10),
   username,

@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: toor
+      POSTGRES_USER: postgres
+      POSTGRES_DB: medsuite
+  app:
+    image: medsuite
+    ports:
+      - 13000:3333

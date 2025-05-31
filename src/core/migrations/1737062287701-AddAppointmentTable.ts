@@ -8,9 +8,10 @@ export class AddAppointmentTable1737062287701 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'varchar',
+            type: 'uuid',
             isPrimary: true,
             generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'date',
@@ -24,12 +25,12 @@ export class AddAppointmentTable1737062287701 implements MigrationInterface {
           },
           {
             name: 'patientId',
-            type: 'varchar',
+            type: 'uuid',
             isNullable: false,
           },
           {
             name: 'doctorId',
-            type: 'varchar',
+            type: 'uuid',
             isNullable: false,
           },
           {
