@@ -33,11 +33,11 @@ export class UserRepository implements IUserRepository {
     const query = this.repository.createQueryBuilder('users').orderBy('users.createdAt', 'DESC');
 
     if (params?.name) {
-      query.orWhere('users.name like :name', { name: Like(params.name) });
+      query.orWhere('users.name ILIKE :name', { name: Like(params.name) });
     }
 
     if (params?.taxIdentifier) {
-      query.orWhere('users.taxIdentifier like :taxIdentifier', { taxIdentifier: Like(params.taxIdentifier) });
+      query.orWhere('users.taxIdentifier ILIKE :taxIdentifier', { taxIdentifier: Like(params.taxIdentifier) });
     }
 
     if (params?.type) {

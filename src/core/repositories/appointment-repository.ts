@@ -58,13 +58,13 @@ export class AppointmentRepository implements IAppointmentRepository {
 
       const queryToAdd = Object.entries(paramsToMap)
         .filter(([key]) => params[key as keyof IAppointmentSearchParameters])
-        .map(([key, value], i) => (i === 0 ? `${value} LIKE :${key}` : ` OR ${value} LIKE :${key}`))
+        .map(([key, value], i) => (i === 0 ? `${value} ILIKE :${key}` : ` OR ${value} ILIKE :${key}`))
         .join('');
 
       const paramsToAdd = Object.entries(paramsToMap).reduce(
         (acc, [key]) => {
           if (params[key as keyof IAppointmentSearchParameters]) {
-            acc[key] = Like(`%${params[key as keyof IAppointmentSearchParameters]}%`);
+            acc[key] = Like(params[key as keyof IAppointmentSearchParameters] as string);
           }
           return acc;
         },
