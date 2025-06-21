@@ -11,4 +11,10 @@ export interface IUserService {
   getById(id: string): Promise<UserEntity>;
   forgotPassword(email: string): Promise<string>;
   resetPassword(params: { resetToken: string; password: string }): Promise<void>;
+  getDashboard(userId: string): Promise<{
+    totalUsers: number;
+    concludedAppointments: number;
+    pendingAppointments: number;
+    todayAppointments: number;
+  }>;
 }

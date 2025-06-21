@@ -10,4 +10,5 @@ export interface IAppointmentRepository {
   getFiltered(params: IAppointmentSearchParameters): Promise<AppointmentEntity[]>;
   save(appointment: AppointmentEntity): Promise<AppointmentEntity>;
   getByWhere(options: FindManyOptions<AppointmentEntity>): Promise<AppointmentEntity[]>;
+  countByOptions(options: FindManyOptions<AppointmentEntity>): Promise<number>;
 }

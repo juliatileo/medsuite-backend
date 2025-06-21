@@ -81,4 +81,14 @@ export class UserController extends BaseHttpController implements interfaces.Con
   async resetPassword(@requestBody() body: { resetToken: string; password: string }): Promise<void> {
     return this.userService.resetPassword(body);
   }
+
+  @httpGet('/dashboard/:id', auth)
+  async getDashboard(@requestParam('id') userId: string): Promise<{
+    totalUsers: number;
+    concludedAppointments: number;
+    pendingAppointments: number;
+    todayAppointments: number;
+  }> {
+    return this.userService.getDashboard(userId);
+  }
 }

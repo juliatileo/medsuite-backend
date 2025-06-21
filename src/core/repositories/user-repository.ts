@@ -62,4 +62,8 @@ export class UserRepository implements IUserRepository {
   async findOne(params: FindOneOptions<UserEntity>): Promise<UserEntity | null> {
     return this.repository.findOne(params);
   }
+
+  async countByType(type: UserType): Promise<number> {
+    return this.repository.count({ where: { type, deletedAt: undefined } });
+  }
 }

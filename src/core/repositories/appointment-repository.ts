@@ -98,4 +98,8 @@ export class AppointmentRepository implements IAppointmentRepository {
   async getByWhere(options: FindManyOptions<AppointmentEntity>): Promise<AppointmentEntity[]> {
     return this.repository.find(options);
   }
+
+  async countByOptions(options: FindManyOptions<AppointmentEntity>): Promise<number> {
+    return this.repository.count(options);
+  }
 }

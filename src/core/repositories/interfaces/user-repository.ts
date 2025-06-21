@@ -12,4 +12,5 @@ export interface IUserRepository {
   getByEmail(email: string): Promise<UserEntity | null>;
   getById(id: string): Promise<UserEntity | null>;
   findOne(params: FindOneOptions<UserEntity>): Promise<UserEntity | null>;
+  countByType(type: UserType): Promise<number>;
 }

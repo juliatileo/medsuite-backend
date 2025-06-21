@@ -2,8 +2,11 @@ import bcrypt from 'bcrypt';
 import { inject, injectable } from 'inversify';
 import jwt from 'jsonwebtoken';
 import { DateTime } from 'luxon';
+import { Between } from 'typeorm';
 
+import { AppointmentEntity, AppointmentStatus } from '@core/entities/appointment';
 import { UserEntity, UserType } from '@core/entities/user';
+import { IAppointmentRepository } from '@core/repositories/interfaces/appointment-repository';
 import { IPatientInfoRepository } from '@core/repositories/interfaces/patient-info-repository';
 import { IUserRepository } from '@core/repositories/interfaces/user-repository';
 import { IWhatsAppService } from '@core/services/interfaces/whatsapp-interface';
@@ -28,6 +31,7 @@ export class UserService implements IUserService {
     private readonly patientInfoRepository: IPatientInfoRepository,
     @inject(TYPES.WhatsAppService)
     private readonly whatsappService: IWhatsAppService,
+    @inject(TYPES.AppointmentRepository) private readonly appointmentRepository: IAppointmentRepository,
   ) {}
 
   async list(): Promise<UserEntity[]> {
@@ -181,5 +185,46 @@ export class UserService implements IUserService {
       resetToken: null,
       resetTokenExpiration: null,
     });
+  }
+
+  async getDashboard(userId: string): Promise<{
+    totalUsers: number;
+    concludedAppointments: number;
+    pendingAppointments: number;
+    todayAppointments: number;
+  }> {
+    const user = await this.userRepository.getById(userId);
+
+    if (!user) {
+      throw new HttpError('User not found', 404);
+    }
+
+    let [totalUsers, concludedAppointments, pendingAppointments, todayAppointments] = [0, 0, 0, 0];
+
+    totalUsers = await this.userRepository.countByType(
+      user.type === UserType.DOCTOR ? UserType.PATIENT : UserType.DOCTOR,
+    );
+
+    let appointmentCountParams: Partial<AppointmentEntity>;
+
+    if (user.type === UserType.DOCTOR) appointmentCountParams = { doctorId: user.id };
+    else appointmentCountParams = { patientId: user.id };
+
+    concludedAppointments = await this.appointmentRepository.countByOptions({
+      where: { ...appointmentCountParams, status: AppointmentStatus.DONE },
+    });
+
+    pendingAppointments = await this.appointmentRepository.countByOptions({
+      where: { ...appointmentCountParams, status: AppointmentStatus.PENDING_DONE },
+    });
+
+    todayAppointments = await this.appointmentRepository.countByOptions({
+      where: {
+        ...appointmentCountParams,
+        date: Between(DateTime.now().startOf('day').toJSDate(), DateTime.now().endOf('day').toJSDate()),
+      },
+    });
+
+    return { totalUsers, concludedAppointments, pendingAppointments, todayAppointments };
   }
 }
