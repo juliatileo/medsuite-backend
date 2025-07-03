@@ -189,6 +189,8 @@ export class UserService implements IUserService {
 
   async getDashboard(userId: string): Promise<{
     totalUsers: number;
+    scheduledAppointments: number;
+    canceledAppointments: number;
     concludedAppointments: number;
     pendingAppointments: number;
     todayAppointments: number;
@@ -199,7 +201,14 @@ export class UserService implements IUserService {
       throw new HttpError('User not found', 404);
     }
 
-    let [totalUsers, concludedAppointments, pendingAppointments, todayAppointments] = [0, 0, 0, 0];
+    let [
+      totalUsers,
+      scheduledAppointments,
+      canceledAppointments,
+      concludedAppointments,
+      pendingAppointments,
+      todayAppointments,
+    ] = [0, 0, 0, 0, 0, 0];
 
     totalUsers = await this.userRepository.countByType(
       user.type === UserType.DOCTOR ? UserType.PATIENT : UserType.DOCTOR,
@@ -225,6 +234,34 @@ export class UserService implements IUserService {
       },
     });
 
-    return { totalUsers, concludedAppointments, pendingAppointments, todayAppointments };
+    scheduledAppointments = await this.appointmentRepository.countByOptions({
+      where: {
+        ...appointmentCountParams,
+        status: AppointmentStatus.SCHEDULED,
+      },
+    });
+
+    canceledAppointments = await this.appointmentRepository.countByOptions({
+      where: {
+        ...appointmentCountParams,
+        status: AppointmentStatus.CANCELED,
+      },
+    });
+
+    todayAppointments = await this.appointmentRepository.countByOptions({
+      where: {
+        ...appointmentCountParams,
+        date: Between(DateTime.now().startOf('day').toJSDate(), DateTime.now().endOf('day').toJSDate()),
+      },
+    });
+
+    return {
+      totalUsers,
+      concludedAppointments,
+      scheduledAppointments,
+      canceledAppointments,
+      pendingAppointments,
+      todayAppointments,
+    };
   }
 }
